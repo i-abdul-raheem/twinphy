@@ -1,19 +1,34 @@
-export const Footer = () => {
+import { useState } from 'react';
+import { fetchMessages, sendMessage } from '../../api';
+
+export const Footer = ({ receiver, setMessages }) => {
+  const [text, setText] = useState('');
+  const handleSend = async (e) => {
+    e.preventDefault();
+    sendMessage(receiver, text).then((res) => {
+      fetchMessages(window.location.pathname.split('/')[2]).then((res) => {
+        setMessages(res);
+        setText('');
+      });
+    });
+  };
   return (
     <footer className='footer border-0 fixed'>
       <div className='container p-2'>
         <div className='chat-footer'>
-          <form>
+          <form onSubmit={handleSend}>
             <div className='form-group boxed'>
               <div className='input-wrapper message-area'>
                 <div className='append-media'></div>
                 <input
                   type='text'
+                  onChange={(e) => setText(e.target.value)}
+                  value={text}
                   className='form-control'
                   placeholder='Type message...'
                 />
-                <a
-                  href='#chat'
+                <button
+                  type='submit'
                   className='btn btn-chat btn-icon btn-primary p-0 btn-rounded'
                 >
                   <svg width='24' height='24' viewBox='0 0 24 24' fill='none'>
@@ -22,7 +37,7 @@ export const Footer = () => {
                       fill='#fff'
                     />
                   </svg>
-                </a>
+                </button>
               </div>
             </div>
           </form>

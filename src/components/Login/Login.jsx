@@ -16,7 +16,7 @@ export const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:5001/api/auths/login", {
+      .post("http://localhost:5000/api/auths/login", {
         email: values.email,
         password: values.pass,
       })
@@ -137,8 +137,7 @@ export const Login = () => {
             </form>
             <div class="social-box">
               <span>Or sign in with</span>
-              <div class="d-flex justify-content-between">
-                <img src="assets/images/icons/facebook.png" alt="/" />
+              <div class="d-flex justify-content-center">
                 <form action="/auth/google" method="get" id="googleForm">
                   <button style={{ outline: "none", border: 0 }} type="submit">
                     <img src="assets/images/icons/google.png" alt="/" />

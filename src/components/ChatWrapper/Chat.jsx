@@ -1,6 +1,7 @@
 import { Row } from './Row';
+import moment from 'moment';
 
-export const Chat = () => {
+export const Chat = ({ chats }) => {
   return (
     <div className='page-content'>
       <div className='content-inner pt-0'>
@@ -29,14 +30,17 @@ export const Chat = () => {
             </div>
           </form>
           <ul className='dz-list message-list'>
-            <Row
-              name={'Lucas Mokmana'}
-              message={'Hey bro, let\'s meetup at centre point corner'}
-              time={'2m ago'}
-              image={'assets/images/message/pic4.jpg'}
-              seen={true}
-              isOnline={true}
-            />
+            {chats.map((chat, index) => (
+              <Row
+                key={index}
+                name={`${chat?.firstName} ${chat?.lastName}`}
+                time={moment(chat?.updatedAt).fromNow()}
+                image={chat?.avatar}
+                seen={true}
+                isOnline={true}
+                id={chat?._id}
+              />
+            ))}
           </ul>
         </div>
       </div>
