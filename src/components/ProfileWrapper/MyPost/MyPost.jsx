@@ -182,30 +182,6 @@ export const MyPost = () => {
             ))}
           </div>
         )}
-        {/* {profileData.length > 0 ? (
-          profileData.map((tab, index) => (
-            <div
-              className={`tab-pane fade ${index === 0 ? "show active" : ""}`}
-              id={tab.id}
-              role="tabpanel"
-              aria-labelledby={`${tab.id}-tab`}
-              tabIndex="0"
-              key={index}
-            >
-              <div className="dz-lightgallery style-2" id={tab.galleryId}>
-                {tab.images.map((image, imgIndex) => (
-                  <a className="gallery-box" href={image} key={imgIndex}>
-                    <NavLink to="/user-post">
-                      <img src={image} alt="image" / />
-                    </NavLink>
-                  </a>
-                ))}
-              </div>
-            </div>
-          ))
-        ) : (
-          <div className="no-posts-message">No posts yet</div>
-        )}*/}
       </div>
     </>
   );
