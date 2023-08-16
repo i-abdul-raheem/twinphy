@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import { AiFillEye } from "react-icons/ai";
+import { AiFillEyeInvisible } from "react-icons/ai";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -71,7 +73,7 @@ export const Login = () => {
                   </div>
                 </span>
                 <input
-                  type="text"
+                  type="email"
                   class="form-control"
                   placeholder="Email"
                   onChange={(e) =>
@@ -112,23 +114,26 @@ export const Login = () => {
                   }}
                   class="input-group-text show-pass"
                 >
-                  <i class="fa fa-eye-slash text-primary"></i>
-                  <i class="fa fa-eye text-primary"></i>
+                  {eye === false ? (
+                    <AiFillEyeInvisible size={20} />
+                  ) : (
+                    <AiFillEye size={20} />
+                  )}
                 </span>
               </div>
-            {/* </form> */}
-            <Link
-              to="/forget"
-              class="btn-link d-block mb-3 text-end text-underline"
-            >
-              Forgot Password
-            </Link>
-            {/* <a class='btn btn-primary btn-block mb-3'>
+              {/* </form> */}
+              <Link
+                to="/forget"
+                class="btn-link d-block mb-3 text-end text-underline"
+              >
+                Forgot Password
+              </Link>
+              {/* <a class='btn btn-primary btn-block mb-3'>
               SIGN IN
             </a> */}
-            <button type="submit" className="btn btn-primary btn-block mb-3">
-              SIGN IN
-            </button>
+              <button type="submit" className="btn btn-primary btn-block mb-3">
+                SIGN IN
+              </button>
             </form>
             <div class="social-box">
               <span>Or sign in with</span>

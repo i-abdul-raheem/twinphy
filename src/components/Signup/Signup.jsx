@@ -6,10 +6,26 @@ import { BsCalendarDate } from "react-icons/bs";
 import { LiaCitySolid } from "react-icons/lia";
 import { BsFlag } from "react-icons/bs";
 import { FaFileImage } from "react-icons/fa";
+import { AiFillEye } from "react-icons/ai";
+import { AiFillEyeInvisible } from "react-icons/ai";
+
+const initialErrors = {
+  firstName: "",
+  lastName: "",
+  userName: "",
+  avatar: "",
+  email: "",
+  pass: "",
+  dateOfBirth: "",
+  city: "",
+  country: "",
+};
 
 export const Signup = () => {
   const navigate = useNavigate();
   const [eye, setEye] = useState(false);
+  const [errors, setErrors] = useState(initialErrors);
+  const [userNameError, setUserNameError] = useState(false);
 
   const [values, setValues] = useState({
     firstName: "",
@@ -23,6 +39,98 @@ export const Signup = () => {
     city: "",
     country: "",
   });
+
+  function debouncedAPICall() {
+    let timeoutId;
+
+    return function () {
+      clearTimeout(timeoutId);
+
+      timeoutId = setTimeout(() => {
+        axios
+          .get(
+            "http://localhost:5001/api/users"
+          )
+          .then((res) => {
+            const names=res.data?.data?.userData.map((item) => item?.userName)
+            const result= names.includes(values.userName);
+            if (result) {
+              setUserNameError(true);
+            }else{
+              setUserNameError(false);
+            }
+          })
+          .catch((err) => console.log(err));
+      }, 700);
+    };
+  }
+
+  const callfunc=debouncedAPICall();
+  callfunc();
+
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = { ...initialErrors };
+
+    // Add validation rules here
+    if (!values.firstName) {
+      newErrors.firstName = "First name is required";
+      isValid = false;
+    } else if (values.userName.length < 3) {
+      newErrors.firstName = "First name must be at least 3 characters long";
+      isValid = false;
+    }
+
+    if (!values.lastName) {
+      newErrors.lastName = "Last name is required";
+      isValid = false;
+    }
+
+    if (!values.userName) {
+      newErrors.userName = "User name is required";
+      isValid = false;
+    }
+
+    if (!values.avatar) {
+      newErrors.avatar = "avatar is required";
+      isValid = false;
+    }
+
+    if (!values.email) {
+      newErrors.email = "email is required";
+      isValid = false;
+    }
+
+    if (!values.pass) {
+      newErrors.pass = "password is required";
+      isValid = false;
+    }
+
+    if (!values.gender) {
+      newErrors.gender = "gender is required";
+      isValid = false;
+    }
+
+    if (!values.dateOfBirth) {
+      newErrors.dateOfBirth = "Date is required";
+      isValid = false;
+    }
+
+    if (!values.city) {
+      newErrors.city = "city is required";
+      isValid = false;
+    }
+
+    if (!values.country) {
+      newErrors.country = "country is required";
+      isValid = false;
+    }
+
+    // Add more validation rules for other fields
+
+    setErrors(newErrors);
+    return isValid;
+  };
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -39,10 +147,14 @@ export const Signup = () => {
     }
   };
 
-  console.log(values, "values");
-
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (validateForm()) {
+      // Form submission logic here
+      console.log("Form submitted successfully!");
+    } else {
+      console.log("Form has errors. Please fix them.");
+    }
     axios
       .post("http://localhost:5001/api/auths", {
         firstName: values.firstName,
@@ -118,6 +230,9 @@ export const Signup = () => {
                   }
                 />
               </div>
+              {errors.firstName && (
+                <div className="error">{errors.firstName}</div>
+              )}
               <div class="mb-3 input-group input-group-icon">
                 <span class="input-group-text">
                   <div class="input-icon">
@@ -148,6 +263,9 @@ export const Signup = () => {
                   }
                 />
               </div>
+              {errors.lastName && (
+                <div className="error">{errors.lastName}</div>
+              )}
               <div class="mb-3 input-group input-group-icon">
                 <span class="input-group-text">
                   <div class="input-icon">
@@ -178,6 +296,12 @@ export const Signup = () => {
                   }
                 />
               </div>
+              {userNameError && (
+                <div className="error">User Name Already Exist</div>
+              )}
+              {errors.userName && (
+                <div className="error">{errors.userName}</div>
+              )}
               <div class="mb-3 input-group input-group-icon">
                 <span class="input-group-text">
                   <div class="input-icon">
@@ -190,7 +314,9 @@ export const Signup = () => {
                   style={{ cursor: "pointer" }}
                 >
                   <span style={{ marginRight: 10 }}>Avatar</span>
-                  {values.avatar !== "" &&<img id="pic" height={50} width={50} />}
+                  {values.avatar !== "" && (
+                    <img id="pic" height={50} width={50} />
+                  )}
                   <input
                     name="file"
                     id="file-input"
@@ -201,6 +327,7 @@ export const Signup = () => {
                   />
                 </label>
               </div>
+              {errors.avatar && <div className="error">{errors.avatar}</div>}
               <div class="mb-3 input-group input-group-icon">
                 <span class="input-group-text">
                   <div class="input-icon">
@@ -231,6 +358,7 @@ export const Signup = () => {
                   }
                 />
               </div>
+              {errors.email && <div className="error">{errors.email}</div>}
               <div class="mb-3 input-group input-group-icon">
                 <span class="input-group-text">
                   <div class="input-icon">
@@ -264,10 +392,16 @@ export const Signup = () => {
                   }}
                   class="input-group-text show-pass"
                 >
-                  <i class="fa fa-eye-slash text-primary"></i>
-                  <i class="fa fa-eye text-primary"></i>
+                  {eye === false ? (
+                    <AiFillEyeInvisible size={20} />
+                  ) : (
+                    <AiFillEye size={20} />
+                  )}
                 </span>
               </div>
+              {errors.password && (
+                <div className="error">{errors.password}</div>
+              )}
               <div class="mb-3 input-group input-group-icon">
                 <span class="input-group-text">
                   <div class="input-icon">
@@ -301,6 +435,9 @@ export const Signup = () => {
                   }
                 />
               </div>
+              {errors.dateOfBirth && (
+                <div className="error">{errors.dateOfBirth}</div>
+              )}
               <div class="mb-3 input-group input-group-icon">
                 <span class="input-group-text">
                   <div class="input-icon">
@@ -316,6 +453,7 @@ export const Signup = () => {
                   }
                 />
               </div>
+              {errors.city && <div className="error">{errors.city}</div>}
               <div class="mb-3 input-group input-group-icon">
                 <span class="input-group-text">
                   <div class="input-icon">
@@ -331,6 +469,7 @@ export const Signup = () => {
                   }
                 />
               </div>
+              {errors.country && <div className="error">{errors.country}</div>}
               <button type="submit" className="btn btn-primary btn-block mb-3">
                 REGISTER
               </button>
