@@ -1,19 +1,39 @@
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
-export const EditNameModal = ({ isOpen, onClose }) => {
+export const EditNameModal = ({
+  isOpen,
+  onClose,
+  firstName,
+  lastName,
+  setUserData,
+}) => {
   const [editedName, setEditedName] = useState({
-    firstName: "jhon",
-    lastName: "Doe",
+    firstName: firstName,
+    lastName: lastName,
   });
 
   const [hasChanges, setHasChanges] = useState(false);
 
   const handleChnages = (e) => {
     e.preventDefault();
-    console.log(editedName, "editedName");
     onClose();
+    console.log(editedName, "editedName");
+    axios
+      .put("http://localhost:5000/api/users/64d679342e7340553804ccdf", {
+        firstName: editedName?.firstName,
+        lastName: editedName?.lastName,
+      })
+      .then((res) => {
+        setUserData({
+          ...res?.data?.data,
+          firstName: editedName?.firstName,
+          lastName: editedName?.lastName,
+        });
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleFirstNameChange = (e) => {
@@ -26,13 +46,13 @@ export const EditNameModal = ({ isOpen, onClose }) => {
     setHasChanges(true);
   };
 
-//   useEffect(() => {
-//     setEditedName({
-//       firstName: firstName,
-//       lastName: lastName,
-//     });
-//     setHasChanges(false);
-//   }, [firstName, lastName]);
+  useEffect(() => {
+    setEditedName({
+      firstName: firstName,
+      lastName: lastName,
+    });
+    setHasChanges(false);
+  }, [firstName, lastName]);
 
   return (
     <Modal show={isOpen} onHide={onClose}>
