@@ -9,7 +9,6 @@ export * from './MessageWrapper';
 export * from './ProfileWrapper';
 export * from './NotificationWrapper';
 export * from './CommentWrapper';
-export * from './FriendsWrapper';
 export * from './CreatePostWrapper';
 export * from './Login';
 export * from './Signup';
