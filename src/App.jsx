@@ -17,7 +17,7 @@ export default function App() {
       <Route path='/' element={<HomePage />} />
       <Route path='/timeline' element={<Timeline />} />
       <Route path='/chat' element={<Chat />} />
-      <Route path='/message' element={<Message />} />
+      <Route path='/message/:id' element={<Message />} />
       <Route path='/profile' element={<Profile />} />
       <Route path='/notifications' element={<Notification />} />
       <Route path='/comment' element={<Comment />} />

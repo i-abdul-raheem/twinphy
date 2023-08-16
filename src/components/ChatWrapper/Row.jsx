@@ -1,21 +1,30 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { getLastMessage } from '../../api';
+import moment from 'moment';
 
-export const Row = ({ name, message, time, image, seen, isOnline }) => {
+export const Row = ({ name, image, isOnline, id }) => {
+  const [message, setMessage] = useState(null);
+  useEffect(() => {
+    getLastMessage(id).then((res) => setMessage(res));
+  }, [id]);
   return (
     <li>
-      <Link to='/message'>
+      <Link to={`/message/${id}`}>
         <div className={`${isOnline && 'media'} media-50`}>
           <img className='rounded' src={image} alt='imag' />
         </div>
         <div className='media-content'>
           <div>
             <h6 className='name'>{name}</h6>
-            <p className='my-1'>{message}</p>
+            <p className='my-1'>{message?.text}</p>
           </div>
           <div className='left-content'>
-            <span className='time'>{time}</span>
-            <div className={`seen-btn ${seen && 'active'} mt-2`}>
-              {seen && (
+            <span className='time' style={{ width: 100 }}>
+              {moment(message?.updatedAt).fromNow()}
+            </span>
+            <div className={`seen-btn ${message?.isSeen && 'active'} mt-2`}>
+              {message?.isSeen && (
                 <svg
                   width='11'
                   height='9'

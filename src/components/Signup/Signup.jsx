@@ -1,6 +1,185 @@
-import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { useState } from 'react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { BsGenderMale } from 'react-icons/bs';
+import { BsCalendarDate } from 'react-icons/bs';
+import { LiaCitySolid } from 'react-icons/lia';
+import { BsFlag } from 'react-icons/bs';
+import { FaFileImage } from 'react-icons/fa';
+import { AiFillEye } from 'react-icons/ai';
+import { AiFillEyeInvisible } from 'react-icons/ai';
+
+const initialErrors = {
+  firstName: '',
+  lastName: '',
+  userName: '',
+  avatar: '',
+  email: '',
+  pass: '',
+  dateOfBirth: '',
+  city: '',
+  country: '',
+};
 
 export const Signup = () => {
+  const navigate = useNavigate();
+  const [eye, setEye] = useState(false);
+  const [errors, setErrors] = useState(initialErrors);
+  const [userNameError, setUserNameError] = useState(false);
+
+  const [values, setValues] = useState({
+    firstName: '',
+    lastName: '',
+    userName: '',
+    avatar: '',
+    email: '',
+    pass: '',
+    gender: 'male',
+    dateOfBirth: '',
+    city: '',
+    country: '',
+  });
+
+  function debouncedAPICall() {
+    let timeoutId;
+
+    return function () {
+      clearTimeout(timeoutId);
+
+      timeoutId = setTimeout(() => {
+        axios
+          .get('http://13.48.59.123:5001/api/users')
+          .then((res) => {
+            const names = res.data?.data?.userData.map(
+              (item) => item?.userName
+            );
+            const result = names.includes(values.userName);
+            if (result) {
+              setUserNameError(true);
+            } else {
+              setUserNameError(false);
+            }
+          })
+          .catch((err) => console.log(err));
+      }, 700);
+    };
+  }
+
+  const callfunc = debouncedAPICall();
+  callfunc();
+
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = { ...initialErrors };
+
+    // Add validation rules here
+    if (!values.firstName) {
+      newErrors.firstName = 'First name is required';
+      isValid = false;
+    } else if (values.userName.length < 3) {
+      newErrors.firstName = 'First name must be at least 3 characters long';
+      isValid = false;
+    }
+
+    if (!values.lastName) {
+      newErrors.lastName = 'Last name is required';
+      isValid = false;
+    }
+
+    if (!values.userName) {
+      newErrors.userName = 'User name is required';
+      isValid = false;
+    }
+
+    if (!values.avatar) {
+      newErrors.avatar = 'avatar is required';
+      isValid = false;
+    }
+
+    if (!values.email) {
+      newErrors.email = 'email is required';
+      isValid = false;
+    }
+
+    if (!values.pass) {
+      newErrors.pass = 'password is required';
+      isValid = false;
+    }
+
+    if (!values.gender) {
+      newErrors.gender = 'gender is required';
+      isValid = false;
+    }
+
+    if (!values.dateOfBirth) {
+      newErrors.dateOfBirth = 'Date is required';
+      isValid = false;
+    }
+
+    if (!values.city) {
+      newErrors.city = 'city is required';
+      isValid = false;
+    }
+
+    if (!values.country) {
+      newErrors.country = 'country is required';
+      isValid = false;
+    }
+
+    // Add more validation rules for other fields
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setValues({
+        ...values,
+        avatar: URL.createObjectURL(file).replace(/^blob:/, ''),
+      });
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        document.getElementById('pic').src = e.target.result;
+      };
+      console.log(reader.readAsDataURL(file), '12345');
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      // Form submission logic here
+      console.log('Form submitted successfully!');
+    } else {
+      console.log('Form has errors. Please fix them.');
+    }
+    axios
+      .post('http://localhost:5000/api/auths', {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        userName: values.userName,
+        avatar: values.avatar,
+        email: values.email,
+        password: values.pass,
+        gender: values.gender,
+        dateOfBirth: values.dateOfBirth,
+        city: values.city,
+        country: values.country,
+      })
+      .then((res) => {
+        console.log(res, 'res');
+        localStorage.setItem('@twinphy-token', res?.data?.data?.token);
+        localStorage.setItem(
+          '@twinphy-user',
+          JSON.stringify(res?.data?.data?.user)
+        );
+        navigate('/');
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <div class='content-body'>
       <div class='container vh-100'>
@@ -17,7 +196,7 @@ export const Signup = () => {
                 eiusmod tempor
               </p>
             </div>
-            <form>
+            <form onSubmit={handleSubmit}>
               <div class='mb-3 input-group input-group-icon'>
                 <span class='input-group-text'>
                   <div class='input-icon'>
@@ -39,8 +218,113 @@ export const Signup = () => {
                     </svg>
                   </div>
                 </span>
-                <input type='text' class='form-control' placeholder='Name' />
+                <input
+                  type='text'
+                  class='form-control'
+                  placeholder='Firstname'
+                  onChange={(e) =>
+                    setValues({ ...values, firstName: e.target.value })
+                  }
+                />
               </div>
+              {errors.firstName && (
+                <div className='error'>{errors.firstName}</div>
+              )}
+              <div class='mb-3 input-group input-group-icon'>
+                <span class='input-group-text'>
+                  <div class='input-icon'>
+                    <svg width='19' height='19' viewBox='0 0 19 19' fill='none'>
+                      <path
+                        d='M15.587 16.3479V14.8261C15.587 14.019 15.2663 13.2448 14.6956 12.6741C14.1248 12.1033 13.3507 11.7827 12.5435 11.7827H6.45655C5.64937 11.7827 4.87525 12.1033 4.30448 12.6741C3.73372 13.2448 3.41307 14.019 3.41307 14.8261V16.3479'
+                        stroke='white'
+                        stroke-width='2'
+                        stroke-linecap='round'
+                        stroke-linejoin='round'
+                      ></path>
+                      <path
+                        d='M9.50002 8.73918C11.1809 8.73918 12.5435 7.37657 12.5435 5.6957C12.5435 4.01483 11.1809 2.65222 9.50002 2.65222C7.81915 2.65222 6.45654 4.01483 6.45654 5.6957C6.45654 7.37657 7.81915 8.73918 9.50002 8.73918Z'
+                        stroke='white'
+                        stroke-width='2'
+                        stroke-linecap='round'
+                        stroke-linejoin='round'
+                      ></path>
+                    </svg>
+                  </div>
+                </span>
+                <input
+                  type='text'
+                  class='form-control'
+                  placeholder='Lastname'
+                  onChange={(e) =>
+                    setValues({ ...values, lastName: e.target.value })
+                  }
+                />
+              </div>
+              {errors.lastName && (
+                <div className='error'>{errors.lastName}</div>
+              )}
+              <div class='mb-3 input-group input-group-icon'>
+                <span class='input-group-text'>
+                  <div class='input-icon'>
+                    <svg width='19' height='19' viewBox='0 0 19 19' fill='none'>
+                      <path
+                        d='M15.587 16.3479V14.8261C15.587 14.019 15.2663 13.2448 14.6956 12.6741C14.1248 12.1033 13.3507 11.7827 12.5435 11.7827H6.45655C5.64937 11.7827 4.87525 12.1033 4.30448 12.6741C3.73372 13.2448 3.41307 14.019 3.41307 14.8261V16.3479'
+                        stroke='white'
+                        stroke-width='2'
+                        stroke-linecap='round'
+                        stroke-linejoin='round'
+                      ></path>
+                      <path
+                        d='M9.50002 8.73918C11.1809 8.73918 12.5435 7.37657 12.5435 5.6957C12.5435 4.01483 11.1809 2.65222 9.50002 2.65222C7.81915 2.65222 6.45654 4.01483 6.45654 5.6957C6.45654 7.37657 7.81915 8.73918 9.50002 8.73918Z'
+                        stroke='white'
+                        stroke-width='2'
+                        stroke-linecap='round'
+                        stroke-linejoin='round'
+                      ></path>
+                    </svg>
+                  </div>
+                </span>
+                <input
+                  type='text'
+                  class='form-control'
+                  placeholder='Username'
+                  onChange={(e) =>
+                    setValues({ ...values, userName: e.target.value })
+                  }
+                />
+              </div>
+              {userNameError && (
+                <div className='error'>User Name Already Exist</div>
+              )}
+              {errors.userName && (
+                <div className='error'>{errors.userName}</div>
+              )}
+              <div class='mb-3 input-group input-group-icon'>
+                <span class='input-group-text'>
+                  <div class='input-icon'>
+                    <FaFileImage className='icon' />
+                  </div>
+                </span>
+                <label
+                  class='form-control'
+                  htmlFor='file-input'
+                  style={{ cursor: 'pointer' }}
+                >
+                  <span style={{ marginRight: 10 }}>Avatar</span>
+                  {values.avatar !== '' && (
+                    <img id='pic' height={50} width={50} />
+                  )}
+                  <input
+                    name='file'
+                    id='file-input'
+                    type='file'
+                    accept='image/*'
+                    // style={{ display: "none" }}
+                    onChange={handleImageUpload}
+                  />
+                </label>
+              </div>
+              {errors.avatar && <div className='error'>{errors.avatar}</div>}
               <div class='mb-3 input-group input-group-icon'>
                 <span class='input-group-text'>
                   <div class='input-icon'>
@@ -62,8 +346,16 @@ export const Signup = () => {
                     </svg>
                   </div>
                 </span>
-                <input type='email' class='form-control' placeholder='Email' />
+                <input
+                  type='email'
+                  class='form-control'
+                  placeholder='Email'
+                  onChange={(e) =>
+                    setValues({ ...values, email: e.target.value })
+                  }
+                />
               </div>
+              {errors.email && <div className='error'>{errors.email}</div>}
               <div class='mb-3 input-group input-group-icon'>
                 <span class='input-group-text'>
                   <div class='input-icon'>
@@ -84,19 +376,104 @@ export const Signup = () => {
                   </div>
                 </span>
                 <input
-                  type='password'
+                  type={eye === false ? 'password' : 'text'}
                   class='form-control dz-password'
                   placeholder='Password'
+                  onChange={(e) =>
+                    setValues({ ...values, password: e.target.value })
+                  }
                 />
-                <span class='input-group-text show-pass'>
-                  <i class='fa fa-eye-slash text-primary'></i>
-                  <i class='fa fa-eye text-primary'></i>
+                <span
+                  onClick={() => {
+                    eye === false ? setEye(true) : setEye(false);
+                  }}
+                  class='input-group-text show-pass'
+                >
+                  {eye === false ? (
+                    <AiFillEyeInvisible size={20} />
+                  ) : (
+                    <AiFillEye size={20} />
+                  )}
                 </span>
               </div>
+              {errors.password && (
+                <div className='error'>{errors.password}</div>
+              )}
+              <div class='mb-3 input-group input-group-icon'>
+                <span class='input-group-text'>
+                  <div class='input-icon'>
+                    <BsGenderMale />
+                  </div>
+                </span>
+                <select
+                  class='form-control'
+                  id='selectOption'
+                  value={values.gender}
+                  onChange={(e) =>
+                    setValues({ ...values, gender: e.target.value })
+                  }
+                >
+                  <option value='male'>Male</option>
+                  <option value='female'>Female</option>
+                </select>
+              </div>
+              <div class='mb-3 input-group input-group-icon'>
+                <span class='input-group-text'>
+                  <div class='input-icon'>
+                    <BsCalendarDate />
+                  </div>
+                </span>
+                <input
+                  type='date'
+                  class='form-control'
+                  placeholder='Birth Date'
+                  onChange={(e) =>
+                    setValues({ ...values, dateOfBirth: e.target.value })
+                  }
+                />
+              </div>
+              {errors.dateOfBirth && (
+                <div className='error'>{errors.dateOfBirth}</div>
+              )}
+              <div class='mb-3 input-group input-group-icon'>
+                <span class='input-group-text'>
+                  <div class='input-icon'>
+                    <LiaCitySolid />
+                  </div>
+                </span>
+                <input
+                  type='text'
+                  class='form-control'
+                  placeholder='City'
+                  onChange={(e) =>
+                    setValues({ ...values, city: e.target.value })
+                  }
+                />
+              </div>
+              {errors.city && <div className='error'>{errors.city}</div>}
+              <div class='mb-3 input-group input-group-icon'>
+                <span class='input-group-text'>
+                  <div class='input-icon'>
+                    <BsFlag />
+                  </div>
+                </span>
+                <input
+                  type='text'
+                  class='form-control'
+                  placeholder='Country'
+                  onChange={(e) =>
+                    setValues({ ...values, country: e.target.value })
+                  }
+                />
+              </div>
+              {errors.country && <div className='error'>{errors.country}</div>}
+              <button type='submit' className='btn btn-primary btn-block mb-3'>
+                REGISTER
+              </button>
             </form>
-            <a href='login.html' class='btn btn-primary btn-block mb-3'>
+            {/* <a href="login.html" class="btn btn-primary btn-block mb-3">
               REGISTER
-            </a>
+            </a> */}
             <div class='d-flex align-items-center justify-content-center'>
               <Link to='/login' class='text-light text-center d-block'>
                 Already have an account?

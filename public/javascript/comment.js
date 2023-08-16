@@ -97,12 +97,12 @@ async function fetchComments(postId) {
       const {google, avatar, followers, following,posts}= await res.json()
      
       const commentHTML = `
-        <li class="parent-list">
-          <div class="list-content">
+        <li className="parent-list">
+          <div className="list-content">
             <img src="${google.pic}" alt="/">
             <div>
-              <h6 class="font-14 mb-1">${google.name}</h6>
-              <p class="mb-2">${comment.comment}</p>
+              <h6 className="font-14 mb-1">${google.name}</h6>
+              <p className="mb-2">${comment.comment}</p>
               
             </div>
           </div>
