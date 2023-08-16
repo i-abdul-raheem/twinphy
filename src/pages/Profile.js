@@ -1,5 +1,7 @@
-import { ProfileWrapper } from '../components';
+import { ProfileWrapper } from "../components";
 
 export const Profile = () => {
-  return <ProfileWrapper />;
+  return (
+      <ProfileWrapper />
+  );
 };

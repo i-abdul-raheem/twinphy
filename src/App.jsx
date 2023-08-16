@@ -3,7 +3,6 @@ import {
   Chat,
   Comment,
   CreatePost,
-  Friends,
   HomePage,
   Message,
   Notification,
@@ -22,7 +21,6 @@ export default function App() {
       <Route path='/profile' element={<Profile />} />
       <Route path='/notifications' element={<Notification />} />
       <Route path='/comment' element={<Comment />} />
-      <Route path='/friends' element={<Friends />} />
       <Route path='/create-post' element={<CreatePost />} />
       <Route path='/login' element={<Login />} />
       <Route path='/signup' element={<Signup />} />
