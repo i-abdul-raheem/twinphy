@@ -3,22 +3,13 @@
 import { useState } from "react";
 
 export const Following = () => {
-  const [iconTab, setIconTab] = useState({
-    grid: true,
-    column: false,
-  });
+  const [grid, setGrid] = useState(true);
 
   const handleGrid = () => {
-    setIconTab({
-      grid: true,
-      column: false,
-    });
+      setGrid(true)
   };
   const handleColumn = () => {
-    setIconTab({
-      grid: false,
-      column: true,
-    });
+    setGrid(false)
   };
   const userFriendsData = [
     {
@@ -39,13 +30,16 @@ export const Following = () => {
   ];
   return (
     <>
-      <div className="contant-section style-2" style={{ width: "100%" }}>
+       <div className="contant-section style-2" style={{ width: "100%" }}>
         <div className="title-bar m-0">
           <h6 className="mb-0">Friends</h6>
           <div className="dz-tab style-2">
             <ul className="nav nav-tabs" id="myTab3" role="tablist">
               <li className="nav-item" role="presentation">
-                <button className="nav-link active" onClick={handleGrid}>
+                <button
+                  className={`nav-link ${grid && "active"}`}
+                  onClick={handleGrid}
+                >
                   <svg
                     width="24"
                     height="24"
@@ -89,7 +83,10 @@ export const Following = () => {
                 </button>
               </li>
               <li className="nav-item" role="presentation">
-                <button className="nav-link active" onClick={handleColumn}>
+                <button
+                  className={`nav-link ${!grid && "active"}`}
+                  onClick={handleColumn}
+                >
                   <svg
                     width="24"
                     height="24"
@@ -152,58 +149,27 @@ export const Following = () => {
           </div>
         </div>
         <div className="tab-content" id="myTab3Content">
-          {iconTab?.grid && (
-            <div
-              className="tab-pane fade show active"
-              id="grid"
-              role="tabpanel"
-              aria-labelledby="grid-tab"
-            >
+          {grid ? (
+          <div
+            className="tab-pane fade show active"
+            id="grid"
+            role="tabpanel"
+            aria-labelledby="grid-tab"
+          >
+            <div className="dz-user-list row g-2">
               <div className="dz-user-list row g-2">
-                <div className="dz-user-list row g-2">
-                  {userFriendsData.map((user, index) => (
-                    <div key={index} className="col-6">
-                      <div className="user-grid">
-                        <a
-                          href="user-profile.html"
-                          className="media status media-60"
-                        >
-                          <img src={user.imageSrc} alt="/" />
-                          <div className="active-point"></div>
-                        </a>
-                        <a href="user-profile.html" className="name">
-                          {user.name}
-                        </a>
-                        <a href="javascript:void(0);" className="follow-btn">
-                          {user.isFollowed ? "UNFOLLOW" : "FOLLOW"}
-                        </a>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-          {iconTab?.column && (
-            <div
-              className="tab-pane fade show active"
-              id="list"
-              role="tabpanel"
-              aria-labelledby="list-tab"
-            >
-              <div className="dz-user-list row g-3">
                 {userFriendsData.map((user, index) => (
-                  <div key={index} className="col-12">
-                    <div className="user-grid style-2">
+                  <div key={index} className="col-6">
+                    <div className="user-grid">
                       <a
                         href="user-profile.html"
-                        className="d-flex align-items-center"
+                        className="media status media-60"
                       >
-                        <div className="media status media-50">
-                          <img src={user.imageSrc} alt="/" />
-                          <div className="active-point"></div>
-                        </div>
-                        <span className="name">{user.name}</span>
+                        <img src={user.imageSrc} alt="/" />
+                        <div className="active-point"></div>
+                      </a>
+                      <a href="user-profile.html" className="name">
+                        {user.name}
                       </a>
                       <a href="javascript:void(0);" className="follow-btn">
                         {user.isFollowed ? "UNFOLLOW" : "FOLLOW"}
@@ -213,7 +179,35 @@ export const Following = () => {
                 ))}
               </div>
             </div>
-          )}
+          </div>):(
+          <div
+            className="tab-pane fade show active"
+            id="list"
+            role="tabpanel"
+            aria-labelledby="list-tab"
+          >
+            <div className="dz-user-list row g-3">
+              {userFriendsData.map((user, index) => (
+                <div key={index} className="col-12">
+                  <div className="user-grid style-2">
+                    <a
+                      href="user-profile.html"
+                      className="d-flex align-items-center"
+                    >
+                      <div className="media status media-50">
+                        <img src={user.imageSrc} alt="/" />
+                        <div className="active-point"></div>
+                      </div>
+                      <span className="name">{user.name}</span>
+                    </a>
+                    <a href="javascript:void(0);" className="follow-btn">
+                      {user.isFollowed ? "UNFOLLOW" : "FOLLOW"}
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>)}
         </div>
       </div>
     </>

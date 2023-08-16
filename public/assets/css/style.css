@@ -20753,6 +20753,9 @@ ul.list-check li:after {
   border: none;
   width: 100%;
 }
+.social-bar ul li .active{
+  background-color: #5231E2;
+}
 .social-bar ul li button h4,
 .social-bar ul li button .h4 {
   margin-bottom: 0;
@@ -20761,10 +20764,10 @@ ul.list-check li:after {
 .social-bar ul li button span {
   color: rgba(255, 255, 255, 0.87);
 }
-/* .social-bar ul li.active button {
-  background: #5231e2;
+.social-bar ul li.active button {
+  background: black;
   position: relative;
-} */
+}
 .social-bar ul li.active button:after {
   content: "";
   position: absolute;

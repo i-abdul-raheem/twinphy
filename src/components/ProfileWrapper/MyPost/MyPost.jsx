@@ -2,23 +2,14 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 export const MyPost = () => {
-  const [iconTab, setIconTab] = useState({
-    grid: true,
-    column: false,
-  });
+    const [grid, setGrid] = useState(true);
 
-  const handleGrid = () => {
-    setIconTab({
-      grid: true,
-      column: false,
-    });
-  };
-  const handleColumn = () => {
-    setIconTab({
-      grid: false,
-      column: true,
-    });
-  };
+    const handleGrid = () => {
+        setGrid(true)
+    };
+    const handleColumn = () => {
+      setGrid(false)
+    };
 
   const profileData = [
     {
@@ -42,7 +33,7 @@ export const MyPost = () => {
         <div className="dz-tab style-2">
           <ul className="nav nav-tabs" id="myTab3" role="tablist">
             <li className="nav-item" role="presentation">
-              <button className="nav-link active" onClick={handleGrid}>
+              <button className={`nav-link ${grid && "active"}`} onClick={handleGrid}>
                 <svg
                   width="24"
                   height="24"
@@ -86,7 +77,7 @@ export const MyPost = () => {
               </button>
             </li>
             <li className="nav-item" role="presentation">
-              <button className="nav-link active" onClick={handleColumn}>
+              <button className={`nav-link ${!grid && "active"}`} onClick={handleColumn}>
                 <svg
                   width="24"
                   height="24"
@@ -149,7 +140,7 @@ export const MyPost = () => {
         </div>
       </div>
       <div className="tab-content" id="myTabContent3">
-        {iconTab?.grid && (
+        {grid ? (
           <div
             className="tab-pane fade show active"
             id="home-tab-pane3"
@@ -169,8 +160,8 @@ export const MyPost = () => {
               </div>
             ))}
           </div>
-        )}
-        {iconTab?.column && (
+        )
+        :(
           <div
             className="tab-pane fade  show active"
             id="profile-tab-pane3"

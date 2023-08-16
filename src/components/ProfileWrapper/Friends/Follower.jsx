@@ -3,23 +3,14 @@
 import { useState } from "react";
 
 export const Follower = () => {
-    const [iconTab, setIconTab] = useState({
-        grid: true,
-        column: false,
-      });
-    
-      const handleGrid = () => {
-        setIconTab({
-          grid: true,
-          column: false,
-        });
-      };
-      const handleColumn = () => {
-        setIconTab({
-          grid: false,
-          column: true,
-        });
-      };
+    const [grid, setGrid] = useState(true);
+
+    const handleGrid = () => {
+        setGrid(true)
+    };
+    const handleColumn = () => {
+      setGrid(false)
+    };
   const userFriendsData = [
     {
       name: "Andy Lee",
@@ -61,7 +52,7 @@ export const Follower = () => {
             <ul className="nav nav-tabs" id="myTab3" role="tablist">
               <li className="nav-item" role="presentation">
                 <button
-                  className="nav-link active"
+                  className={`nav-link ${grid && "active"}`}
                   onClick={handleGrid}
                 >
                   <svg
@@ -108,7 +99,7 @@ export const Follower = () => {
               </li>
               <li className="nav-item" role="presentation">
                 <button
-                  className="nav-link active"
+                  className={`nav-link ${!grid && "active"}`}
                   onClick={handleColumn}
                 >
                   <svg
@@ -173,7 +164,8 @@ export const Follower = () => {
           </div>
         </div>
         <div className="tab-content" id="myTab3Content">
-          {iconTab?.grid &&(<div
+          {grid ? (
+          <div
             className="tab-pane fade show active"
             id="grid"
             role="tabpanel"
@@ -202,8 +194,8 @@ export const Follower = () => {
                 ))}
               </div>
             </div>
-          </div>)}
-          {iconTab?.column &&(<div
+          </div>):(
+          <div
             className="tab-pane fade show active"
             id="list"
             role="tabpanel"

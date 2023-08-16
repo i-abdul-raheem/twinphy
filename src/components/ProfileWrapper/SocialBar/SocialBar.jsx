@@ -32,25 +32,25 @@ export const SocialBar = () => {
       following: true,
     });
   };
-  
+
   return (
     <>
       <div className="social-bar">
         <ul className="nav" role="tablist">
           <li className="nav-item">
-            <button className="nav-link active" onClick={handlePost}>
+            <button className={`nav-link ${tab?.post && "active"}`} onClick={handlePost}>
               <h4>52</h4>
               <span>Post</span>
             </button>
           </li>
           <li className="nav-item">
-            <button className="nav-link active" onClick={handleFollower}>
+            <button className={`nav-link ${tab?.followers && "active"}`} onClick={handleFollower}>
               <h4>250</h4>
               <span>Follower</span>
             </button>
           </li>
           <li className="nav-item">
-            <button className="nav-link active" onClick={handleFollowing}>
+            <button className={`nav-link ${tab?.following && "active"}`} onClick={handleFollowing}>
               <h4>4.5k</h4>
               <span>Following</span>
             </button>
