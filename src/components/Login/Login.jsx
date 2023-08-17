@@ -1,35 +1,27 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AiFillEye } from "react-icons/ai";
 import { AiFillEyeInvisible } from "react-icons/ai";
+import { login } from "../../api";
+import { toJson } from "../../utils";
 
 export const Login = () => {
   const navigate = useNavigate();
 
   const [eye, setEye] = useState(false);
-  const [values, setValues] = useState({
-    email: "",
-    pass: "",
-  });
+  const [errors, setErrors] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:5000/api/auths/login", {
-        email: values.email,
-        password: values.pass,
-      })
+    const formData = new FormData(e.currentTarget);
+    login(toJson(formData))
       .then((res) => {
-        console.log(res, "res");
-        localStorage.setItem(
-          "@twinphy-token",
-          JSON.stringify(res?.data?.data?.token)
-        );
-        localStorage.setItem(
-          "@twinphy-user",
-          JSON.stringify(res?.data?.data?.user)
-        );
+        if (res.response) {
+          setErrors(res.response?.data?.message);
+          return;
+        }
+        localStorage.setItem("@twinphy-token", res?.data?.token);
+        localStorage.setItem("@twinphy-user", JSON.stringify(res?.data?.user));
         navigate("/");
       })
       .catch((err) => console.log(err));
@@ -46,8 +38,7 @@ export const Login = () => {
             <div class="started">
               <h1 class="title">Sign in</h1>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor
+              Join a vibrant community where you can interact
               </p>
             </div>
             <form onSubmit={handleSubmit}>
@@ -73,12 +64,11 @@ export const Login = () => {
                   </div>
                 </span>
                 <input
+                  required
+                  name="email"
                   type="email"
                   class="form-control"
                   placeholder="Email"
-                  onChange={(e) =>
-                    setValues({ ...values, email: e.target.value })
-                  }
                 />
               </div>
               <div class="mb-3 input-group input-group-icon">
@@ -101,12 +91,11 @@ export const Login = () => {
                   </div>
                 </span>
                 <input
+                  required
+                  name="password"
                   type={eye === false ? "password" : "text"}
                   class="form-control dz-password"
                   placeholder="Password"
-                  onChange={(e) =>
-                    setValues({ ...values, pass: e.target.value })
-                  }
                 />
                 <span
                   onClick={() => {
@@ -135,6 +124,9 @@ export const Login = () => {
                 SIGN IN
               </button>
             </form>
+            <div class="d-flex align-items-center justify-content-center">
+              {errors}
+            </div>
             <div class="social-box">
               <span>Or sign in with</span>
               <div class="d-flex justify-content-center">
