@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AiFillEye } from "react-icons/ai";
 import { AiFillEyeInvisible } from "react-icons/ai";
+import { login } from "../../api";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -15,20 +16,15 @@ export const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:5000/api/auths/login", {
-        email: values.email,
-        password: values.pass,
-      })
+    login(values.email,values.pass)
       .then((res) => {
-        console.log(res, "res");
         localStorage.setItem(
           "@twinphy-token",
-          JSON.stringify(res?.data?.data?.token)
+          JSON.stringify(res?.data?.token)
         );
         localStorage.setItem(
           "@twinphy-user",
-          JSON.stringify(res?.data?.data?.user)
+          JSON.stringify(res?.data?.user)
         );
         navigate("/");
       })
