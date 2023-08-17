@@ -1,20 +1,21 @@
-import axios from 'axios';
+import axios from "axios";
 
 const BASE_URL =
-  process.env.REACT_APP_ENV === 'local'
-    ? 'http://localhost:5000/api'
-    : 'http://13.48.59.123:5001/api';
+  process.env.REACT_APP_ENV === "local"
+  ? "http://localhost:5000/api"
+  : "http://13.48.59.123:5001/api";
 const makeRequest = async (fn) => {
   return axios
-    .get(BASE_URL + '/auths', {
+    .get(BASE_URL + "/auths", {
       headers: {
-        Authorization: `JWT ${localStorage.getItem('@twinphy-token')}`,
+        Authorization: `JWT ${localStorage.getItem("@twinphy-token")}`,
       },
     })
     .then((res) => {
-      localStorage.setItem('@twinphy-token', res?.data?.data?.token);
+      localStorage.setItem("@twinphy-token", res?.data?.data?.token);
       return fn();
-    });
+    })
+    .catch(() => fn());
 };
 
 const config = {

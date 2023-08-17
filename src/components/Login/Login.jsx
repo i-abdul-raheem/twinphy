@@ -16,12 +16,12 @@ export const Login = () => {
     const formData = new FormData(e.currentTarget);
     login(toJson(formData))
       .then((res) => {
-        if (res.response) {
-          setErrors(res.response?.data?.message);
-          return;
-        }
-        localStorage.setItem("@twinphy-token", res?.data?.token);
-        localStorage.setItem("@twinphy-user", JSON.stringify(res?.data?.user));
+        console.log(res, "res");
+        localStorage.setItem("@twinphy-token", res?.data?.data?.token);
+        localStorage.setItem(
+          "@twinphy-user",
+          JSON.stringify(res?.data?.data?.user)
+        );
         navigate("/");
       })
       .catch((err) => console.log(err));
