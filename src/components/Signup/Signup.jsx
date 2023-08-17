@@ -8,7 +8,9 @@ import { BsFlag } from "react-icons/bs";
 import { FaFileImage } from "react-icons/fa";
 import { AiFillEye } from "react-icons/ai";
 import { AiFillEyeInvisible } from "react-icons/ai";
-import { signup } from "../../api";
+import { signup, debouncedUserName } from "../../api";
+import { debounce } from "lodash";
+import { toJson } from "../../utils";
 
 export const Signup = () => {
   const navigate = useNavigate();
@@ -29,51 +31,28 @@ export const Signup = () => {
   });
 
   useEffect(() => {
-    let ip = "";
     axios
       .get("https://api.ipify.org/?format=json")
       .then((res) => {
-        ip = res.data.ip;
-      })
-      .catch((err) => console.log(err));
-
-    axios
-      .get(`http://ip-api.com/json/${ip}`)
-      .then((res) => {
-        setValues({
-          ...values,
-          city: res.data?.city,
-          country: res.data?.country,
-        });
+        axios
+          .get(`http://ip-api.com/json/${res.data.ip}`)
+          .then((res) => {
+            setValues({
+              ...values,
+              city: res.data?.city,
+              country: res.data?.country,
+            });
+          })
+          .catch((err) => console.log(err));
       })
       .catch((err) => console.log(err));
   }, []);
 
-  function debouncedAPICall() {
-    let timeoutId;
-    return () => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        axios
-          .get("http://13.48.59.123:5001/api/users")
-          .then((res) => {
-            const names = res.data?.data?.userData.map(
-              (item) => item?.userName
-            );
-            const result = names.includes(values.userName);
-            if (result) {
-              setUserNameError(true);
-            } else {
-              setUserNameError(false);
-            }
-          })
-          .catch((err) => console.log(err));
-      }, 300);
-    };
-  }
-
-  const callfunc = debouncedAPICall();
-  callfunc();
+  const debouncedAPICall = async (e) => {
+    let result = await debouncedUserName(e);
+    console.log(result, "debounce call");
+    setUserNameError(result);
+  };
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -92,7 +71,16 @@ export const Signup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    signup(values)
+    const formData = new FormData(e.currentTarget);
+    const file = formData.get("avatar");
+    const blob = new Blob([file], { type: file.type });
+    // formData.set('avatar', blob)
+    formData.set(
+      "avatar",
+      "http://localhost:3000/assets/images/stories/pic2.png"
+    );
+    console.log(toJson(formData), "formData");
+    signup(toJson(formData))
       .then((res) => {
         console.log(res.response?.data?.message, "res");
         if (res.response) {
@@ -118,11 +106,11 @@ export const Signup = () => {
             <div class="started">
               <h1 class="title">Create an Account</h1>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor
+                Unlock a world of social connection and engagement by creating
+                your account today
               </p>
             </div>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} encType="mulipart/form-data">
               <div class="mb-3 input-group input-group-icon">
                 <span class="input-group-text">
                   <div class="input-icon">
@@ -148,12 +136,10 @@ export const Signup = () => {
                   required={true}
                   minLength={3}
                   maxLength={25}
+                  name="firstName"
                   type="text"
                   class="form-control"
                   placeholder="Firstname"
-                  onChange={(e) =>
-                    setValues({ ...values, firstName: e.target.value })
-                  }
                 />
               </div>
               <div class="mb-3 input-group input-group-icon">
@@ -181,12 +167,10 @@ export const Signup = () => {
                   required={true}
                   minLength={3}
                   maxLength={25}
+                  name="lastName"
                   type="text"
                   class="form-control"
                   placeholder="Lastname"
-                  onChange={(e) =>
-                    setValues({ ...values, lastName: e.target.value })
-                  }
                 />
               </div>
               <div class="mb-3 input-group input-group-icon">
@@ -214,12 +198,11 @@ export const Signup = () => {
                   required={true}
                   minLength={3}
                   maxLength={25}
+                  name="userName"
                   type="text"
                   class="form-control"
                   placeholder="Username"
-                  onChange={(e) =>
-                    setValues({ ...values, userName: e.target.value })
-                  }
+                  onChange={(e) => debouncedAPICall(e)}
                 />
               </div>
               {userNameError && (
@@ -242,7 +225,7 @@ export const Signup = () => {
                   )}
                   <input
                     required={true}
-                    name="file"
+                    name="avatar"
                     id="file-input"
                     type="file"
                     accept="image/*"
@@ -275,12 +258,10 @@ export const Signup = () => {
                 <input
                   required={true}
                   maxLength={25}
+                  name="email"
                   type="email"
                   class="form-control"
                   placeholder="Email"
-                  onChange={(e) =>
-                    setValues({ ...values, email: e.target.value })
-                  }
                 />
               </div>
               <div class="mb-3 input-group input-group-icon">
@@ -306,12 +287,10 @@ export const Signup = () => {
                   required={true}
                   minLength={8}
                   maxLength={50}
+                  name="password"
                   type={eye === false ? "password" : "text"}
                   class="form-control dz-password"
                   placeholder="Password"
-                  onChange={(e) =>
-                    setValues({ ...values, password: e.target.value })
-                  }
                 />
                 <span
                   onClick={() => {
@@ -333,13 +312,12 @@ export const Signup = () => {
                   </div>
                 </span>
                 <select
+                  required
+                  name="gender"
                   class="form-control"
                   id="selectOption"
-                  value={values.gender}
-                  onChange={(e) =>
-                    setValues({ ...values, gender: e.target.value })
-                  }
                 >
+                  <option value="">Select Gender...</option>
                   <option value="male">Male</option>
                   <option value="female">Female</option>
                 </select>
@@ -352,12 +330,10 @@ export const Signup = () => {
                 </span>
                 <input
                   required={true}
+                  name="dateOfBirth"
                   type="date"
                   class="form-control"
                   placeholder="Birth Date"
-                  onChange={(e) =>
-                    setValues({ ...values, dateOfBirth: e.target.value })
-                  }
                 />
               </div>
               <div class="mb-3 input-group input-group-icon">
@@ -370,13 +346,11 @@ export const Signup = () => {
                   required={true}
                   minLength={3}
                   maxLength={25}
+                  name="city"
                   type="text"
                   value={values.city}
                   class="form-control"
                   placeholder="City"
-                  onChange={(e) =>
-                    setValues({ ...values, city: e.target.value })
-                  }
                 />
               </div>
               <div class="mb-3 input-group input-group-icon">
@@ -389,13 +363,11 @@ export const Signup = () => {
                   required={true}
                   minLength={3}
                   maxLength={25}
+                  name="country"
                   type="text"
                   value={values.country}
                   class="form-control"
                   placeholder="Country"
-                  onChange={(e) =>
-                    setValues({ ...values, country: e.target.value })
-                  }
                 />
               </div>
               <button type="submit" className="btn btn-primary btn-block mb-3">

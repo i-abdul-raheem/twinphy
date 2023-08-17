@@ -1,38 +1,41 @@
 import axios from "axios";
 import config from "./config";
+import { debounce } from "lodash";
 
 const url = config.BASE_URL + "/auths";
 
-export const login = (email, password) => {
+export const login = (values) => {
   return axios
-    .post(url + "/login", { email, password })
+    .post(url + "/login", values)
     .then((res) => {
       return res?.data;
     })
-    .catch(() => null);
+    .catch((err) => err);
 };
 
 export const signup = (values) => {
+  console.log(values);
   return axios
-  .post(url, {
-    firstName: values.firstName,
-    lastName: values.lastName,
-    userName: values.userName,
-    avatar: values.avatar,
-    email: values.email,
-    password: values.password,
-    gender: values.gender,
-    dateOfBirth: values.dateOfBirth,
-    city: values.city,
-    country: values.country,
-  })
+  .post(url, values)
     .then((res) => {
       console.log(res?.data,"func");
       return res?.data;
     })
     .catch((err) => {
-      console.log(err);
-      // return null;
       return err
     });
 };
+
+export const debouncedUserName = debounce((e) => {
+  return axios
+    .get("http://13.48.59.123:5001/api/users")
+    .then((res) => {
+      const names = res.data?.data?.userData.map((item) => item?.userName);
+      console.log(names, "names");
+      const result = names.includes(e.target.value);
+      console.log(result, "result");
+      // setUserNameError(result);
+      return result;
+    })
+    .catch((err) => console.log(err));
+}, 300);
