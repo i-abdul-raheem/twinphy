@@ -2,6 +2,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { updateUser } from "../../api";
 
 export const EditNameModal = ({
   isOpen,
@@ -21,11 +22,7 @@ export const EditNameModal = ({
     e.preventDefault();
     onClose();
     console.log(editedName, "editedName");
-    axios
-      .put("http://localhost:5000/api/users/64d679342e7340553804ccdf", {
-        firstName: editedName?.firstName,
-        lastName: editedName?.lastName,
-      })
+    updateUser(editedName?.firstName, editedName?.lastName)
       .then((res) => {
         setUserData({
           ...res?.data?.data,
