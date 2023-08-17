@@ -14,12 +14,21 @@ export const login = (values) => {
 };
 
 export const signup = (values) => {
-  console.log(values);
   return axios
   .post(url, values)
     .then((res) => {
-      console.log(res?.data,"func");
       return res?.data;
+    })
+    .catch((err) => {
+      return err
+    });
+};
+
+export const avatarUpload = (values) => {
+  return axios
+  .post(config.BASE_URL + "/upload", values)
+    .then((res) => {
+      return res.data?.data?.Location;
     })
     .catch((err) => {
       return err
@@ -31,10 +40,7 @@ export const debouncedUserName = debounce((e) => {
     .get("http://13.48.59.123:5001/api/users")
     .then((res) => {
       const names = res.data?.data?.userData.map((item) => item?.userName);
-      console.log(names, "names");
       const result = names.includes(e.target.value);
-      console.log(result, "result");
-      // setUserNameError(result);
       return result;
     })
     .catch((err) => console.log(err));

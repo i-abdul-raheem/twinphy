@@ -8,8 +8,7 @@ import { BsFlag } from "react-icons/bs";
 import { FaFileImage } from "react-icons/fa";
 import { AiFillEye } from "react-icons/ai";
 import { AiFillEyeInvisible } from "react-icons/ai";
-import { signup, debouncedUserName } from "../../api";
-import { debounce } from "lodash";
+import { signup, debouncedUserName, avatarUpload } from "../../api";
 import { toJson } from "../../utils";
 
 export const Signup = () => {
@@ -18,14 +17,7 @@ export const Signup = () => {
   const [userNameError, setUserNameError] = useState(false);
   const [errors, setErrors] = useState("");
   const [values, setValues] = useState({
-    firstName: "",
-    lastName: "",
-    userName: "",
     avatar: "",
-    email: "",
-    password: "",
-    gender: "male",
-    dateOfBirth: "",
     city: "",
     country: "",
   });
@@ -69,20 +61,16 @@ export const Signup = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const file = formData.get("avatar");
-    const blob = new Blob([file], { type: file.type });
-    // formData.set('avatar', blob)
-    formData.set(
-      "avatar",
-      "http://localhost:3000/assets/images/stories/pic2.png"
-    );
-    console.log(toJson(formData), "formData");
+    const fileUpload = new FormData();
+    fileUpload.append('avatar', formData.get('avatar'));
+    let imagePath= await avatarUpload(fileUpload);
+    formData.append('avatar', imagePath);
+
     signup(toJson(formData))
       .then((res) => {
-        console.log(res.response?.data?.message, "res");
         if (res.response) {
           setErrors(res.response?.data?.message);
           return;

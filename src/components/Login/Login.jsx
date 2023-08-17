@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AiFillEye } from "react-icons/ai";
@@ -39,8 +38,7 @@ export const Login = () => {
             <div class="started">
               <h1 class="title">Sign in</h1>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor
+              Join a vibrant community where you can interact
               </p>
             </div>
             <form onSubmit={handleSubmit}>
