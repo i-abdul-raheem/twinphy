@@ -61,7 +61,7 @@ export const Footer = () => {
               <video
                 id="preview-video"
                 style={name === "video" ? { display: "block", marginLeft:"20px" } : { display: "none" }}
-                controls
+                autoPlay
               ></video>
             </div>
           </li>
