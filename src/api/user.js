@@ -6,19 +6,14 @@ const url = config.BASE_URL + "/users";
 
 export const getSingleUser = () => {
   return config.makeRequest(() => {
-    return axios
-      .get(url + "?id=64d679342e7340553804ccdf")
-      .then((res) => {
-        return res?.data?.data?.userData[0];
+    return JSON.parse(localStorage.getItem("@twinphy-user"));
       })
-      .catch((err) => console.log(err));
-  });
 };
 
 export const updateUser = (firstName, lastName) => {
   return config.makeRequest(() => {
     return axios
-      .put(url + "/64d679342e7340553804ccdf", {
+      .put(url + `/${JSON.parse(localStorage.getItem("@twinphy-user"))._id}`, {
         firstName: firstName,
         lastName: lastName,
       })

@@ -73,6 +73,7 @@ export const Profile = ({ userData, setUserData }) => {
               <EditProfilePicModal
                 isOpen={isEditPicModalOpen}
                 onClose={() => setIsEditPicModalOpen(false)}
+                profileImage={userData?.profileImage}
               />
             </div>
           </div>

@@ -22,10 +22,7 @@ export const Login = () => {
       })
       .then((res) => {
         console.log(res, "res");
-        localStorage.setItem(
-          "@twinphy-token",
-          JSON.stringify(res?.data?.data?.token)
-        );
+        localStorage.setItem("@twinphy-token", res?.data?.data?.token);
         localStorage.setItem(
           "@twinphy-user",
           JSON.stringify(res?.data?.data?.user)

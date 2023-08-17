@@ -1,20 +1,24 @@
 import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import { FaUserEdit } from "react-icons/fa";
 
-const EditProfilePicModal = ({ isOpen, onClose }) => {
-  const [newProfilePic, setNewProfilePic] = useState("");
+const EditProfilePicModal = ({ isOpen, onClose, profileImage }) => {
+  const [newProfilePic, setNewProfilePic] = useState(profileImage);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const handlePicChange = (event) => {
-    setNewProfilePic(event.target.value);
+    const selectedFile = event.target.files[0];
+    setNewProfilePic(URL.createObjectURL(selectedFile));
+    setSelectedImage(selectedFile); 
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Update the profile picture using the newProfilePic state
-    console.log("New profile picture:", newProfilePic);
-    onClose(); // Close the modal
+    if (selectedImage) {
+      console.log("New profile picture:", newProfilePic);
+      onClose();
+    }
   };
 
   return (
@@ -23,24 +27,29 @@ const EditProfilePicModal = ({ isOpen, onClose }) => {
         <Modal.Title>Edit Profile Picture</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group>
-            <Form.Label>New Profile Picture URL:</Form.Label>
-            <Form.Control
-              type="text"
-              value={newProfilePic}
+      <img src={newProfilePic || profileImage} alt="Profile" style={{ maxWidth: "100%", marginBottom: "15px" }} />
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="profilePic" style={{cursor:"pointer",marginTop:"15px"}}>
+              <FaUserEdit style={{fontSize:"25px"}}/>
+              Change Profile Picture:
+            </label>
+            <input
+              type="file"
+              id="profilePic"
+              accept="image/*"
               onChange={handlePicChange}
             />
-          </Form.Group>
+          </div>
           <div style={{ marginTop: "20px" }}>
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" disabled={!selectedImage}>
               Save
             </Button>
-            <Button variant="secondary" onClick={onClose}  className="mx-2">
+            <Button variant="secondary" onClick={onClose} className="mx-2">
               Cancel
             </Button>
           </div>
-        </Form>
+        </form>
       </Modal.Body>
     </Modal>
   );
