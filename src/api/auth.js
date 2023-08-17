@@ -8,7 +8,8 @@ export const login = (values) => {
   return axios
     .post(url + "/login", values)
     .then((res) => {
-      return res?.data;
+      console.log(res)
+      return res;
     })
     .catch((err) => err);
 };
