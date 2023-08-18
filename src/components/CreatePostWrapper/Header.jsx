@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-export const Header = ({ handlePost }) => {
+export const Header = ({ loading }) => {
   return (
     <header class="header bg-white">
       <div class="container">
@@ -15,10 +15,11 @@ export const Header = ({ handlePost }) => {
           <div class="mid-content"></div>
           <div class="right-content">
             <button
+              disabled={loading}
               style={{ outline: "none", border: 0 }}
               id="post-btn"
               class="post-btn"
-              onClick={handlePost}
+              type="submit"
             >
               POST
             </button>
