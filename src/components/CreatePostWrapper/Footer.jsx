@@ -1,20 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-export const Footer = ({setMediaUrl , mediaUrl}) => {
-  const [name, setName] = useState('');
-  
+export const Footer = ({ setMediaUrl, mediaUrl }) => {
+  const [name, setName] = useState("");
 
   const handleImageUpload = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
-      setName(selectedFile.type.startsWith('image/') ? 'image' : 'video');
+      setName(selectedFile.type.startsWith("image/") ? "image" : "video");
       setMediaUrl(URL.createObjectURL(selectedFile));
     }
   };
 
   return (
     <footer className="footer border-0 fixed">
-      <div className="container" style={name === 'video' ? { position: 'relative' } : {}}>
+      <div
+        className="container"
+        style={name === "video" ? { position: "relative" } : {}}
+      >
         <ul className="element-list">
           <li>
             <input
@@ -29,18 +31,28 @@ export const Footer = ({setMediaUrl , mediaUrl}) => {
             </label>
             <div
               className="media media-50"
-              style={name !== '' ? { width: '320px', height: 'auto', marginTop: '20px' } : {}}
+              style={
+                name !== ""
+                  ? { width: "320px", height: "auto", marginTop: "20px" }
+                  : {}
+              }
             >
               <img
                 id="pic2"
                 src={mediaUrl}
                 alt="profile"
-                style={name === 'image' ? { display: 'block' } : { display: 'none' }}
+                style={
+                  name === "image" ? { display: "block" } : { display: "none" }
+                }
               />
               <video
                 id="preview-video"
                 src={mediaUrl}
-                style={name === 'video' ? { display: 'block', marginLeft: '20px' } : { display: 'none' }}
+                style={
+                  name === "video"
+                    ? { display: "block", marginLeft: "20px" }
+                    : { display: "none" }
+                }
                 autoPlay
               ></video>
             </div>
@@ -50,4 +62,3 @@ export const Footer = ({setMediaUrl , mediaUrl}) => {
     </footer>
   );
 };
-

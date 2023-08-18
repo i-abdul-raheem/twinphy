@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export const Header = ({ handlePost }) => {
-  
   return (
     <header class="header bg-white">
       <div class="container">

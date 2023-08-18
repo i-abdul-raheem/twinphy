@@ -9,11 +9,9 @@ export const CreatePostWrapper = () => {
   const [text, setText] = useState("");
   const [mediaUrl, setMediaUrl] = useState("");
   const handlePost = () => {
-    // handleGetPosts();
     handleAddPost(text, mediaUrl);
-
   };
-  console.log(text);
+
   return (
     <>
       <Header handlePost={handlePost} />
