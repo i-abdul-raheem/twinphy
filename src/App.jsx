@@ -1,5 +1,4 @@
 import { Route, Routes } from "react-router-dom";
-import axios from "axios";
 import React, { useState, useEffect } from "react";
 import {
   Chat,
@@ -12,54 +11,74 @@ import {
   Timeline,
 } from "./pages";
 import { Forget, Login, Signup } from "./components";
-import { signup } from "../src/api/auth";
+import { signup, login } from "../src/api/auth";
+import { currentLocation, generateRandomPassword } from "../src/utils";
 
 export default function App() {
-  const [values, setValues] = useState({
-    city: "",
-    country: "",
-  });
-  useEffect(() => {
-    axios
-      .get("https://api.ipify.org/?format=json")
-      .then((res) => {
-        axios
-          .get(`http://ip-api.com/json/${res.data.ip}`)
-          .then((res) => {
-            setValues({
-              ...values,
-              city: res.data?.city,
-              country: res.data?.country,
-            });
-          })
-          .catch((err) => console.log(err));
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  useEffect(() => {
+  const createUser = async () => {
     const userDataCookie = document.cookie
       .split(";")
       .find((cookie) => cookie.trim().startsWith("userData="));
 
     if (userDataCookie) {
+      const cookieName = userDataCookie.split("=")[0].trim();
       const decodedData = decodeURIComponent(userDataCookie.split("=")[1]);
       const userData = JSON.parse(decodedData);
-      console.log(userData);
-
-      signup({
-        firstName: userData?.name?.givenName,
-        lastName: userData?.name?.familyName,
-        userName: userData?.name?.givenName + userData?.name?.familyName,
-        email: userData?.emails[0].value,
-        password: "12345678",
-        avatar: userData?.photos[0].value,
-        gender: "male",
-        dateOfBirth: "1990-01-01",
-        city: values.city,
-        country: values.country,
-      });
+      currentLocation()
+        .then((res) => {
+          console.log(res);
+          const randomPassword = generateRandomPassword();
+          signup({
+            firstName: userData?.name?.givenName,
+            lastName: userData?.name?.familyName,
+            userName: userData?.name?.givenName + userData?.name?.familyName,
+            email: userData?.emails[0].value,
+            password: randomPassword,
+            avatar: userData?.photos[0].value,
+            gender: "male",
+            dateOfBirth: "1990-01-01",
+            city: res.city,
+            country: res.country,
+          })
+            .then((res) => {
+              console.log(res, "then");
+              if (res.response) {
+                if (
+                  res.response?.data?.message ===
+                  "User with same email already exist"
+                ) {
+                  console.log(res.response?.data?.message);
+                  login({
+                    email: userData?.emails[0].value,
+                    login_type: "google",
+                  })
+                    .then((res) => {
+                      localStorage.setItem("@twinphy-token", res?.data?.token);
+                      localStorage.setItem(
+                        "@twinphy-user",
+                        JSON.stringify(res?.data?.user)
+                      );
+                    })
+                    .catch((err) => console.log(err));
+                }
+              }
+              localStorage.setItem("@twinphy-token", res?.data?.token);
+              localStorage.setItem(
+                "@twinphy-user",
+                JSON.stringify(res?.data?.user)
+              );
+            })
+            .catch((err) => {
+              console.log(err, "err");
+            });
+        })
+        .catch((err) => console.log(err));
+      document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
     }
+  };
+
+  useEffect(() => {
+    createUser();
   }, []);
 
   return (
