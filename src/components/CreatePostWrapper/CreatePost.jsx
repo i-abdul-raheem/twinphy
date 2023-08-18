@@ -1,4 +1,10 @@
-export const CreatePost = () => {
+import { useState } from "react";
+
+export const CreatePost = ({setText}) => {
+   
+   const handleTextChange = (e) => {
+    setText(e.target.value);  };
+  
   return (
     <div className='page-content'>
       <div className='container'>
@@ -19,6 +25,7 @@ export const CreatePost = () => {
             id='caption'
             className='form-control'
             placeholder="What's on your mind?"
+            onChange={handleTextChange}
           ></textarea>
         </div>
       </div>

@@ -17,10 +17,10 @@ export const Login = () => {
     login(toJson(formData))
       .then((res) => {
         console.log(res, "res");
-        localStorage.setItem("@twinphy-token", res?.data?.data?.token);
+        localStorage.setItem("@twinphy-token", res?.data?.token);
         localStorage.setItem(
           "@twinphy-user",
-          JSON.stringify(res?.data?.data?.user)
+          JSON.stringify(res?.data?.user)
         );
         navigate("/");
       })
