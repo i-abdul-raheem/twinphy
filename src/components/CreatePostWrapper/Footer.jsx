@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export const Footer = ({ setMediaUrl, mediaUrl }) => {
+  const [values, setValues] = useState(null);
   const [name, setName] = useState("");
   
   useEffect(() => {
