@@ -15,6 +15,7 @@ export const Footer = () => {
       document.getElementById("preview-video").style.display = "block";
     }
   }, [name]);
+  console.log(name)
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
