@@ -2,6 +2,7 @@ import { Header } from './Header';
 import { Media } from './Media';
 import { Likes } from './Likes';
 import { Comments } from './Comments';
+import axios from 'axios';
 
 export const Post = ({ text }) => {
   return (

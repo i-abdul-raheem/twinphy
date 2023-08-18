@@ -9,7 +9,7 @@ export const login = (values) => {
     .post(url + "/login", values)
     .then((res) => {
       console.log(res)
-      return res;
+      return res?.data;
     })
     .catch((err) => err);
 };
