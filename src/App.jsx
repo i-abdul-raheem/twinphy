@@ -31,7 +31,7 @@ export default function App() {
           signup({
             firstName: userData?.name?.givenName,
             lastName: userData?.name?.familyName,
-            userName: userData?.name?.givenName + userData?.name?.familyName,
+            userName: userData?.emails[0].value,
             email: userData?.emails[0].value,
             password: randomPassword,
             avatar: userData?.photos[0].value,
