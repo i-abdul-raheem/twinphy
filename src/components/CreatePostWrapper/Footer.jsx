@@ -1,8 +1,6 @@
-import { useState, useEffect } from "react";
-import "./style.css";
+import React, { useState } from "react";
 
-export const Footer = () => {
-  const [values, setValues] = useState(null);
+export const Footer = ({ setMediaUrl, mediaUrl }) => {
   const [name, setName] = useState("");
   
   useEffect(() => {
@@ -39,7 +37,10 @@ export const Footer = () => {
 
   return (
     <footer className="footer border-0 fixed">
-      <div className="container" style={name==="video"?{position:"relative"}:{}}>
+      <div
+        className="container"
+        style={name === "video" ? { position: "relative" } : {}}
+      >
         <ul className="element-list">
           <li>
             <input
@@ -52,16 +53,30 @@ export const Footer = () => {
             <label htmlFor="file-input">
               <i className="fa-solid fa-file-image"></i> Photo/Video
             </label>
-            <div className="media media-50" style={name !== "" ? { width: "320px", height: "auto", marginTop:"20px" } : {}}>
+            <div
+              className="media media-50"
+              style={
+                name !== ""
+                  ? { width: "320px", height: "auto", marginTop: "20px" }
+                  : {}
+              }
+            >
               <img
                 id="pic2"
-                src=""
+                src={mediaUrl}
                 alt="profile"
-                style={name === "image" ? { display: "block" } : { display: "none" }}
+                style={
+                  name === "image" ? { display: "block" } : { display: "none" }
+                }
               />
               <video
                 id="preview-video"
-                style={name === "video" ? { display: "block", marginLeft:"20px" } : { display: "none" }}
+                src={mediaUrl}
+                style={
+                  name === "video"
+                    ? { display: "block", marginLeft: "20px" }
+                    : { display: "none" }
+                }
                 autoPlay
               ></video>
             </div>

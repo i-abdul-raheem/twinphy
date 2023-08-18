@@ -1,4 +1,7 @@
-import axios from "axios";
+import axios from 'axios';
+const GOOGLE_URL=process.env.REACT_APP_ENV === 'local'
+? 'http://localhost:5000'
+: 'http://13.48.59.123:5001';
 
 const BASE_URL =
   process.env.REACT_APP_ENV === "local"
@@ -19,6 +22,7 @@ const makeRequest = async (fn) => {
 };
 
 const config = {
+  GOOGLE_URL,
   BASE_URL,
   makeRequest,
 };

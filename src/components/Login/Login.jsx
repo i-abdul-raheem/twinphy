@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AiFillEye } from "react-icons/ai";
 import { AiFillEyeInvisible } from "react-icons/ai";
-import { login } from "../../api";
+import { login, googleLogin } from "../../api";
 import { toJson } from "../../utils";
 
 export const Login = () => {
@@ -11,16 +11,29 @@ export const Login = () => {
   const [eye, setEye] = useState(false);
   const [errors, setErrors] = useState("");
 
+  const handleGoogleLogin = (e) => {
+    e.preventDefault();
+    window.open(
+      "http://localhost:5000/auth/google",
+      "_self"
+    );
+    googleLogin()
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     login(toJson(formData))
       .then((res) => {
         console.log(res, "res");
-        localStorage.setItem("@twinphy-token", res?.data?.data?.token);
+        localStorage.setItem("@twinphy-token", res?.data?.token);
         localStorage.setItem(
           "@twinphy-user",
-          JSON.stringify(res?.data?.data?.user)
+          JSON.stringify(res?.data?.user)
         );
         navigate("/");
       })
@@ -37,9 +50,7 @@ export const Login = () => {
           <div class="join-area">
             <div class="started">
               <h1 class="title">Sign in</h1>
-              <p>
-              Join a vibrant community where you can interact
-              </p>
+              <p>Join a vibrant community where you can interact</p>
             </div>
             <form onSubmit={handleSubmit}>
               <div class="mb-3 input-group input-group-icon">
@@ -130,7 +141,7 @@ export const Login = () => {
             <div class="social-box">
               <span>Or sign in with</span>
               <div class="d-flex justify-content-center">
-                <form action="/auth/google" method="get" id="googleForm">
+                <form onSubmit={handleGoogleLogin}>
                   <button style={{ outline: "none", border: 0 }} type="submit">
                     <img src="assets/images/icons/google.png" alt="/" />
                   </button>

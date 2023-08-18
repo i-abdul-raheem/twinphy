@@ -1,8 +1,11 @@
-import axios from 'axios';
-import config from './config';
+import axios from "axios";
+import config from "./config";
 
-const userInfo = JSON.parse(localStorage.getItem('@twinphy-user'));
-const url = config.BASE_URL + '/chat';
+let userInfo;
+if (localStorage.getItem("@twinphy-user") && localStorage.getItem("@twinphy-user") != "undefined") {
+  userInfo = JSON.parse(localStorage.getItem("@twinphy-user"));
+}
+const url = config.BASE_URL + "/chat";
 export const getAllChats = () => {
   return config.makeRequest(() => {
     return axios
@@ -16,7 +19,9 @@ export const getAllChats = () => {
 export const fetchMessages = (id) => {
   return config.makeRequest(() => {
     return axios
-      .get(url + `?sender=${userInfo?._id?.$oid || userInfo?._id}&receiver=${id}`)
+      .get(
+        url + `?sender=${userInfo?._id?.$oid || userInfo?._id}&receiver=${id}`
+      )
       .then((res) => {
         return res?.data?.data;
       })
@@ -26,7 +31,11 @@ export const fetchMessages = (id) => {
 export const sendMessage = (receiver, text) => {
   return config.makeRequest(() => {
     return axios
-      .post(url, { sender: userInfo?._id?.$oid || userInfo?._id, receiver, text })
+      .post(url, {
+        sender: userInfo?._id?.$oid || userInfo?._id,
+        receiver,
+        text,
+      })
       .then((res) => {
         return res?.data;
       })
@@ -36,7 +45,12 @@ export const sendMessage = (receiver, text) => {
 export const getLastMessage = (receiver) => {
   return config.makeRequest(() => {
     return axios
-      .get(url + `/last?sender=${userInfo?._id?.$oid || userInfo?._id}&receiver=${receiver}`)
+      .get(
+        url +
+          `/last?sender=${
+            userInfo?._id?.$oid || userInfo?._id
+          }&receiver=${receiver}`
+      )
       .then((res) => {
         return res?.data?.data[0];
       })
