@@ -1,13 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export const Footer = ({ setMediaUrl, mediaUrl }) => {
+  const [values, setValues] = useState(null);
   const [name, setName] = useState("");
+  
+  useEffect(() => {
+    if (name === "image") {
+      document.getElementById("pic2").style.display = "block";
+      document.getElementById("preview-video").style.display = "none";
+    }
+    if (name === "video") {
+      document.getElementById("pic2").style.display = "none";
+      document.getElementById("preview-video").style.display = "block";
+    }
+  }, [name]);
+  console.log(name)
 
-  const handleImageUpload = (e) => {
-    const selectedFile = e.target.files[0];
-    if (selectedFile) {
-      setName(selectedFile.type.startsWith("image/") ? "image" : "video");
-      setMediaUrl(URL.createObjectURL(selectedFile));
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setValues(URL.createObjectURL(file).replace(/^blob:/, ""));
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const fileType = e.target.result.split(";")[0].split("/")[0].split(":")[1];
+        setName(fileType);
+        
+        if (fileType === "image") {
+          document.getElementById("pic2").src = e.target.result;
+        }
+        if (fileType === "video") {
+          document.getElementById("preview-video").src = e.target.result;
+        }
+      };
+      reader.readAsDataURL(file);
     }
   };
 
