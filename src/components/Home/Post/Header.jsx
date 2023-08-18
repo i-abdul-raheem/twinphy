@@ -1,6 +1,10 @@
 import { Link } from 'react-router-dom';
+import moment from "moment";
 
-export const Header = () => {
+export const Header = ({time, userData}) => {
+
+  const currentTime = moment(time).fromNow();
+
   return (
     <div className='top-meta'>
       <div className='d-flex justify-content-between align-items-start'>
@@ -13,7 +17,7 @@ export const Header = () => {
         </Link>
         <div className='meta-content ms-3'>
           <h6 className='title mb-0'>
-            <Link to='/user-profile'>Thomas Edison</Link>
+            <Link to='/user-profile'>{userData?.firstName +" "+ userData?.lastName}</Link>
           </h6>
           <ul className='meta-list'>
             <li>
@@ -39,9 +43,9 @@ export const Header = () => {
                   strokeLinejoin='round'
                 />
               </svg>
-              Bangkok, Thailand
+              {userData?.location}
             </li>
-            <li>2m ago</li>
+            <li>{currentTime}</li>
           </ul>
         </div>
       </div>
