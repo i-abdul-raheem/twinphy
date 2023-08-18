@@ -24,10 +24,15 @@ export const EditNameModal = ({
     console.log(editedName, "editedName");
     updateUser(editedName?.firstName, editedName?.lastName)
       .then((res) => {
-        setUserData({
-          ...res?.data?.data,
+        const updatedUserData = {
+          ...JSON.parse(localStorage.getItem("@twinphy-user")),
           firstName: editedName?.firstName,
           lastName: editedName?.lastName,
+        };
+
+        localStorage.setItem("@twinphy-user", JSON.stringify(updatedUserData));
+        setUserData({
+          ...updatedUserData
         });
       })
       .catch((err) => console.log(err));

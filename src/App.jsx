@@ -4,6 +4,7 @@ import {
   Chat,
   Comment,
   CreatePost,
+  Explore,
   HomePage,
   Message,
   Notification,
@@ -85,6 +86,7 @@ export default function App() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/timeline" element={<Timeline />} />
+      <Route path="/explore" element={<Explore />} />
       <Route path="/chat" element={<Chat />} />
       <Route path="/message/:id" element={<Message />} />
       <Route path="/profile" element={<Profile />} />

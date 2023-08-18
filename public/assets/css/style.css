@@ -18733,12 +18733,16 @@ button:focus {
 } 
  
 #lightgallery .gallery-box {
-  width: 33.33%;
+  width: 100%;
   padding-bottom: 5px;
   padding-right: 5px;
 }
 #lightgallery .gallery-box img {
-  height: 110px;
+  height: 150px;
+ }
+ #lightgallery .gallery-box video {
+  height: 150px;
+  width: 100%;
  }
 .divider {
   position: relative;
