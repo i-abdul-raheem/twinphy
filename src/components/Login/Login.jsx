@@ -19,9 +19,7 @@ export const Login = () => {
     );
     googleLogin()
       .then((res) => {
-        // localStorage.setItem("@twinphy-token", res?.data?.token);
-        // localStorage.setItem("@twinphy-user", JSON.stringify(res?.data?.user));
-        // navigate("/");
+        console.log(res);
       })
       .catch((err) => console.log(err));
   };

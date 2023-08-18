@@ -26,19 +26,7 @@ export const signup = (values) => {
 };
 
 export const googleLogin = () => {
-  // return axios
-  // .get("http://localhost:5000/auth/google")
-  //   .then((res) => {
-  //     console.log(res);
-  //     // return res?.data;
-  //   })
-  //   .catch((err) => {
-  //     return err
-  //   });
-
-  return axios.get("http://localhost:5000/profile").then((res) => {
-    console.log(res);
-  });
+  return axios.get(config.GOOGLE_URL + "/profile").then((res) => {});
 };
 
 export const avatarUpload = (values) => {
