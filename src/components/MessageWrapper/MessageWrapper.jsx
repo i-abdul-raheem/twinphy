@@ -1,9 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { Footer } from './Footer';
 import { Header } from './Header';
 import { Message } from './Message';
 import { VideoCall } from './VideoCall';
 import { fetchMessages } from '../../api';
+import io from "socket.io-client";
+import { generateRandomRoomId } from "../../utils";
+
+const socket = io.connect("http://localhost:5001");
 
 export const MessageWrapper = () => {
   const [messages, setMessages] = useState([]);
@@ -15,6 +19,18 @@ export const MessageWrapper = () => {
   const [userInfo, setUserInfo] = useState(
     JSON.parse(localStorage.getItem('@twinphy-user'))
   );
+
+  const joinRoom = () => {
+    // if (messages.length > 0) {
+      const room = process.env.REACT_APP_ROOM;
+      socket.emit("join_room", room);
+    // }
+  };
+
+  useEffect(() => {
+    joinRoom();
+  }, []);
+
   return (
     <>
       <Header
@@ -29,8 +45,8 @@ export const MessageWrapper = () => {
             : messages[0]?.receiver?.avatar
         }
       />
-      <Message messages={messages} />
-      <Footer receiver={messages[0]?.receiver?._id} setMessages={setMessages} />
+      <Message socket={socket} messages={messages} setMessages={setMessages} />
+      <Footer socket={socket} messages={messages} receiver={messages[0]?.receiver?._id} setMessages={setMessages} />
       <VideoCall />
     </>
   );
