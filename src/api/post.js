@@ -3,18 +3,19 @@ import config from "./config";
 
 const url = config.BASE_URL;
 
-export const handleAddPost = (text, mediaUrl) => {
-  const id = "64d679342e7340553804ccdf";
-
-  console.log(text, mediaUrl);
-  return axios
-    .post(`${url}/posts/${id}`, {
-      text,
-      mediaUrl,
-    })
-    .then((res) => {
-      return console.log(res);
-    });
+export const handleAddPost = (values) => {
+  return config.makeRequest(() => {
+    return axios
+      .post(`${url}/posts`, values)
+      .then((res) => {
+        console.log("Response:", res.data);
+        return res.data;
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        throw error;
+      });
+  });
 };
 
 export const handleGetPosts = () => {

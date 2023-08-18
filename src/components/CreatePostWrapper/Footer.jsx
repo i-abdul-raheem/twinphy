@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 
-export const Footer = ({ setMediaUrl, mediaUrl }) => {
+export const Footer = ({ setMediaUrls, mediaUrls }) => {
   const [values, setValues] = useState(null);
   const [name, setName] = useState("");
-  
+
   useEffect(() => {
     if (name === "image") {
       document.getElementById("pic2").style.display = "block";
@@ -14,7 +14,6 @@ export const Footer = ({ setMediaUrl, mediaUrl }) => {
       document.getElementById("preview-video").style.display = "block";
     }
   }, [name]);
-  console.log(name)
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -22,9 +21,12 @@ export const Footer = ({ setMediaUrl, mediaUrl }) => {
       setValues(URL.createObjectURL(file).replace(/^blob:/, ""));
       const reader = new FileReader();
       reader.onload = function (e) {
-        const fileType = e.target.result.split(";")[0].split("/")[0].split(":")[1];
+        const fileType = e.target.result
+          .split(";")[0]
+          .split("/")[0]
+          .split(":")[1];
         setName(fileType);
-        
+
         if (fileType === "image") {
           document.getElementById("pic2").src = e.target.result;
         }
@@ -36,16 +38,17 @@ export const Footer = ({ setMediaUrl, mediaUrl }) => {
     }
   };
 
+setMediaUrls(values)
   return (
     <footer className="footer border-0 fixed">
       <div
         className="container"
-        style={name === "video" ? { position: "relative" } : {}}
+        style={name === "video" ? { position: "relative" } : null}
       >
         <ul className="element-list">
           <li>
             <input
-              name="file"
+              name="avatar"
               id="file-input"
               type="file"
               accept="image/*, video/*"
@@ -64,7 +67,7 @@ export const Footer = ({ setMediaUrl, mediaUrl }) => {
             >
               <img
                 id="pic2"
-                src={mediaUrl}
+                src={mediaUrls}
                 alt="profile"
                 style={
                   name === "image" ? { display: "block" } : { display: "none" }
@@ -72,7 +75,7 @@ export const Footer = ({ setMediaUrl, mediaUrl }) => {
               />
               <video
                 id="preview-video"
-                src={mediaUrl}
+                src={mediaUrls}
                 style={
                   name === "video"
                     ? { display: "block", marginLeft: "20px" }
