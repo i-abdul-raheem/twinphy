@@ -1,8 +1,28 @@
 import { Link } from "react-router-dom";
 import moment from "moment";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { AiOutlineClose } from "react-icons/ai";
+import { useState } from "react";
+import { reportPost } from "../../../api";
 
-export const Header = ({ time, userData }) => {
+export const Header = ({ time, userData, postId }) => {
   const currentTime = moment(time).fromNow();
+
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [description, setDescription] = useState("");
+
+  const toggleReportModal = () => {
+    setShowReportModal(!showReportModal);
+  };
+
+  const user_id = JSON.parse(localStorage.getItem("@twinphy-user"))._id;
+
+  const handleDescription = (e) => {
+    e.preventDefault();
+    reportPost(postId, description, user_id)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div className="top-meta">
@@ -44,12 +64,84 @@ export const Header = ({ time, userData }) => {
                   strokeLinejoin="round"
                 />
               </svg>
-              {`${userData?.location?.city}, ${userData?.location?.country}`}
+              {userData?.location?.city + ", " + userData?.location?.country}
             </li>
             <li>{currentTime}</li>
           </ul>
         </div>
+        <div className="dropdown">
+          <button
+            className="item-content item-link"
+            type="button"
+            id="dropdownMenuButton"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            style={{
+              background: "none",
+              border: "none",
+            }}
+          >
+            <BsThreeDotsVertical />
+          </button>
+
+          <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li>
+              <button className="dropdown-item" onClick={toggleReportModal}>
+                Report Post
+              </button>
+            </li>
+          </ul>
+          <div
+            className={`modal ${showReportModal ? "show d-block" : ""}`}
+            tabIndex="-1"
+            role="dialog"
+          >
+            <div className="modal-dialog" role="document">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title">Report Post</h5>
+                  <AiOutlineClose
+                    onClick={toggleReportModal}
+                    style={{ cursor: "pointer" }}
+                  />
+                </div>
+                <div className="modal-body">
+                  <form onSubmit={handleDescription}>
+                    <div className="form-group">
+                      <label htmlFor="reportDescription">
+                        Report Description
+                      </label>
+                      <textarea
+                        className="form-control"
+                        id="reportDescription"
+                        rows="4"
+                        onChange={(e) => setDescription(e.target.value)}
+                      ></textarea>
+                    </div>
+                    <div className="modal-footer">
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        onClick={toggleReportModal}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        className="btn btn-primary"
+                        onClick={toggleReportModal}
+                      >
+                        Submit
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+
       <button
         className="item-content item-link"
         data-bs-toggle="offcanvas"

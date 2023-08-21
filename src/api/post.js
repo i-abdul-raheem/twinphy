@@ -29,9 +29,20 @@ export const handleAddPost = (values) => {
 
 export const getPosts = () => {
   return config.makeRequest(() => {
-    return axios
+    return axios 
       .get(url)
       .then((res) => res)
+      .catch((err) => console.log(err));
+  });
+};
+export const reportPost = (postId, description, user_id) => {
+  return config.makeRequest(() => {
+    return axios
+      .post(`${config.BASE_URL}/reports/${postId}`, { description, user_id })
+      .then((res) => {
+        console.log(res.data);
+        return res.data;
+      })
       .catch((err) => console.log(err));
   });
 };
