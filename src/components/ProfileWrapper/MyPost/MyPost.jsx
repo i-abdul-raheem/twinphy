@@ -1,31 +1,37 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
-export const MyPost = () => {
-    const [grid, setGrid] = useState(true);
+export const MyPost = ({ postData }) => {
+  const [grid, setGrid] = useState(true);
+  const video = [
+    "mp4",
+    "avi",
+    "mov",
+    "mkv",
+    "wmv",
+    "flv",
+    "webm",
+    "mpeg",
+    "mpg",
+    "3gp",
+    "m4v",
+    "ogg",
+  ];
 
-    const handleGrid = () => {
-        setGrid(true)
-    };
-    const handleColumn = () => {
-      setGrid(false)
-    };
+  const handleGrid = () => {
+    setGrid(true);
+  };
+  const handleColumn = () => {
+    setGrid(false);
+  };
 
   const profileData = [
     {
-      images: [
-        "assets/images/post/pic1.png",
-        "assets/images/post/pic2.png",
-        "assets/images/post/pic3.png",
-        "assets/images/post/pic4.png",
-        "assets/images/post/pic5.png",
-        "assets/images/post/pic6.png",
-        "assets/images/post/pic7.png",
-        "assets/images/post/pic8.png",
-      ],
-    }
+      images: postData
+        .filter((i) => i?.mediaUrls)
+        .map((item) => item.mediaUrls),
+    },
   ];
-
   return (
     <>
       <div className="title-bar my-2">
@@ -33,7 +39,10 @@ export const MyPost = () => {
         <div className="dz-tab style-2">
           <ul className="nav nav-tabs" id="myTab3" role="tablist">
             <li className="nav-item" role="presentation">
-              <button className={`nav-link ${grid && "active"}`} onClick={handleGrid}>
+              <button
+                className={`nav-link ${grid && "active"}`}
+                onClick={handleGrid}
+              >
                 <svg
                   width="24"
                   height="24"
@@ -77,7 +86,10 @@ export const MyPost = () => {
               </button>
             </li>
             <li className="nav-item" role="presentation">
-              <button className={`nav-link ${!grid && "active"}`} onClick={handleColumn}>
+              <button
+                className={`nav-link ${!grid && "active"}`}
+                onClick={handleColumn}
+              >
                 <svg
                   width="24"
                   height="24"
@@ -160,8 +172,7 @@ export const MyPost = () => {
               </div>
             ))}
           </div>
-        )
-        :(
+        ) : (
           <div
             className="tab-pane fade  show active"
             id="profile-tab-pane3"
@@ -174,6 +185,21 @@ export const MyPost = () => {
                 {tab.images.map((image, imgIndex) => (
                   <a className="gallery-box" href={image} key={imgIndex}>
                     <NavLink to="/user-post">
+                      {image &&
+                      video.includes(
+                        image.toString().split(".")[
+                          image.toString().split(".").length - 1
+                        ]
+                      ) ? (
+                        <video
+                          src={image}
+                          autoPlay
+                          muted
+                          style={{ width: "100%" }}
+                        />
+                      ) : (
+                        <img src={image} alt="image" />
+                      )}
                       <img src={image} alt="image" />
                     </NavLink>
                   </a>

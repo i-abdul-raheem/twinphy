@@ -15,7 +15,7 @@ export const getSinglePosts = () => {
 export const handleAddPost = (values) => {
   return config.makeRequest(() => {
     return axios
-      .post(`${url}/posts`, values)
+      .post(url, values)
       .then((res) => {
         console.log("Response:", res.data);
         return res.data;

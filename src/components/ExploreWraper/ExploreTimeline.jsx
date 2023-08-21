@@ -73,7 +73,7 @@ export const ExploreTimeline = ({ exploreData }) => {
                   <p className="text-black">{item?.text}</p>
                   <div className="dz-media">
                     <div className="media-image">
-                      {video.includes(
+                      {item?.mediaUrls && video.includes(
                         item?.mediaUrls.toString().split(".")[
                           item?.mediaUrls.toString().split(".").length - 1
                         ]
