@@ -13,10 +13,7 @@ export const Login = () => {
 
   const handleGoogleLogin = (e) => {
     e.preventDefault();
-    window.open(
-      "http://localhost:5000/auth/google",
-      "_self"
-    );
+    window.open("http://localhost:5000/auth/google", "_self");
     googleLogin()
       .then((res) => {
         console.log(res);
@@ -34,18 +31,20 @@ export const Login = () => {
           return;
         }
         localStorage.setItem("@twinphy-token", res?.data?.token);
-        localStorage.setItem(
-          "@twinphy-user",
-          JSON.stringify(res?.data?.user)
-        );
+        localStorage.setItem("@twinphy-user", JSON.stringify(res?.data?.user));
         navigate("/");
       })
       .catch((err) => console.log(err));
   };
 
-  setTimeout(() => {
-    setErrors("");
-  }, 4000);
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setErrors("");
+    }, 3000);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [errors]);
 
   return (
     <div class="content-body">
