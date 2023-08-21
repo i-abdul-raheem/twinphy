@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import {
   Chat,
@@ -81,6 +81,13 @@ export default function App() {
   useEffect(() => {
     createUser();
   }, []);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!localStorage.getItem("@twinphy-token")) {
+      navigate("/login");
+    }
+  }, [localStorage]);
 
   return (
     <Routes>
