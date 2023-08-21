@@ -18733,7 +18733,7 @@ button:focus {
 } 
  
 #lightgallery .gallery-box {
-  width: 33.33%;
+  width: 100%;
   padding-bottom: 5px;
   padding-right: 5px;
 }
