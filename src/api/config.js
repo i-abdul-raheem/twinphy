@@ -5,7 +5,7 @@ const GOOGLE_URL=process.env.REACT_APP_ENV === 'local'
 
 const BASE_URL =
   process.env.REACT_APP_ENV === "local"
-  ? "http://localhost:5000/api"
+  ? "https://localhost/api"
   : "http://13.48.59.123:5001/api";
 const makeRequest = async (fn) => {
   return axios
