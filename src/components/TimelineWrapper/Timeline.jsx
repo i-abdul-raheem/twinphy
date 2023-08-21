@@ -56,38 +56,41 @@ export const Timeline = ({ timelineData }) => {
                 tabIndex="0"
               >
                 <div className="row">
-                  {timelineData.map((item, index) => (
-                    <div className="col-md-4" key={index}>
-                      <div
-                        className="dz-lightgallery style-2 mt-3"
-                        id="lightgallery"
-                      >
-                        <NavLink
-                          to="/explore"
-                          className="gallery-box"
-                          data-lg-id={item?.id}
+                  {timelineData
+                    .filter((i) => i?.mediaUrls)
+                    .map((item, index) => (
+                      <div className="col-md-4" key={index}>
+                        <div
+                          className="dz-lightgallery style-2 mt-3"
+                          id="lightgallery"
                         >
-                          {video.includes(
-                            item?.mediaUrls.toString().split(".")[
-                              item?.mediaUrls.toString().split(".").length - 1
-                            ]
-                          ) ? (
-                            <video
-                              src={item?.mediaUrls}
-                              autoPlay
-                              muted
-                              style={{ width: "100%"}}
-                            />
-                          ) : (
-                            <img
-                              src={item?.mediaUrls}
-                              alt={`photo${index + 1}`}
-                            />
-                          )}
-                        </NavLink>
+                          <NavLink
+                            to="/explore"
+                            className="gallery-box"
+                            data-lg-id={item?.id}
+                          >
+                            {item?.mediaUrls &&
+                            video.includes(
+                              item?.mediaUrls.toString().split(".")[
+                                item?.mediaUrls.toString().split(".").length - 1
+                              ]
+                            ) ? (
+                              <video
+                                src={item?.mediaUrls}
+                                autoPlay
+                                muted
+                                style={{ width: "100%" }}
+                              />
+                            ) : (
+                              <img
+                                src={item?.mediaUrls}
+                                alt={`photo${index + 1}`}
+                              />
+                            )}
+                          </NavLink>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </div>
             </div>

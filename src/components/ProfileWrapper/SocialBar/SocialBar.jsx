@@ -4,9 +4,10 @@ import { MyPost } from "../MyPost";
 import { getSinglePosts } from "../../../api";
 
 export const SocialBar = () => {
+  const [postData, setPostData] = useState([])
   useEffect(() => {
     getSinglePosts()
-      .then((res) => console.log(res))
+      .then((res) => setPostData(res?.data?.data))
       .catch((err) => console.log(err));
   }, []);
   const [tab, setTab] = useState({
@@ -48,7 +49,7 @@ export const SocialBar = () => {
               className={`nav-link ${tab?.post && "active"}`}
               onClick={handlePost}
             >
-              <h4>52</h4>
+              <h4>{postData.length-1}</h4>
               <span>Post</span>
             </button>
           </li>
@@ -76,7 +77,7 @@ export const SocialBar = () => {
         {/* <!-- Tab Content for "Post" --> */}
         {tab?.post && (
           <div className="tab-pane active">
-            <MyPost />
+            <MyPost postData={postData}/>
           </div>
         )}
 
