@@ -29,7 +29,10 @@ export const Login = () => {
     const formData = new FormData(e.currentTarget);
     login(toJson(formData))
       .then((res) => {
-        console.log(res, "res");
+        if (res.response) {
+          setErrors(res.response?.data?.message);
+          return;
+        }
         localStorage.setItem("@twinphy-token", res?.data?.token);
         localStorage.setItem(
           "@twinphy-user",
@@ -39,6 +42,11 @@ export const Login = () => {
       })
       .catch((err) => console.log(err));
   };
+
+  setTimeout(() => {
+    setErrors("");
+  }, 4000);
+
   return (
     <div class="content-body">
       <div class="container vh-100">
