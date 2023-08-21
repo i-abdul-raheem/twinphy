@@ -9,10 +9,12 @@ import { useEffect, useState } from "react";
 export const Post = () => {
   const [postData, setPostData] = useState([]);
 
-
   useEffect(() => {
     getPosts()
-      .then((res) => setPostData(res?.data?.data))
+      .then((res) => {
+        console.log(res);
+        setPostData(res?.data?.data);
+      })
       .catch((err) => console.log(err));
   }, []);
 
@@ -21,7 +23,7 @@ export const Post = () => {
     <div id="post-area" className="post-area">
       {postData.map((item, index) => (
         <div className="post-card">
-          <Header time={item?.createdAt} userData={item?.user_id}/>
+          <Header time={item?.createdAt} userData={item?.user_id} />
           <p className="text-black">{item?.text}</p>
           <div className="dz-media">
             <Media src={item?.mediaUrls} />
