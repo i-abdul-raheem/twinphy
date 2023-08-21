@@ -6,7 +6,7 @@ import axios from "axios";
 import { getPosts } from "../../../api";
 import { useEffect, useState } from "react";
 
-export const Post = ({ text }) => {
+export const Post = () => {
   const [postData, setPostData] = useState([]);
 
 

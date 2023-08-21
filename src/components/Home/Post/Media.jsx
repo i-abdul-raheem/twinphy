@@ -15,7 +15,7 @@ export const Media = ({ src }) => {
   ];
   return (
     <>
-      {video.includes(
+      {src && video.includes(
         src.toString().split(".")[src.toString().split(".").length - 1]
       ) ? (
         <video
