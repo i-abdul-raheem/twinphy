@@ -8,7 +8,12 @@ import { useEffect, useState } from "react";
 
 export const Post = () => {
   const [postData, setPostData] = useState([]);
-  const userId = JSON.parse(localStorage.getItem("@twinphy-user"))._id;
+  let userId;
+  if (
+    localStorage.getItem("@twinphy-user") &&
+    localStorage.getItem("@twinphy-user") !== "undefined"
+  )
+    userId = JSON.parse(localStorage.getItem("@twinphy-user"))._id;
 
   useEffect(() => {
     getPosts()
