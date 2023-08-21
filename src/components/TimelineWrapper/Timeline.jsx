@@ -15,6 +15,8 @@ export const Timeline = ({ timelineData }) => {
     "m4v",
     "ogg",
   ];
+
+  const userId = JSON.parse(localStorage.getItem("@twinphy-user"))._id;
   return (
     <>
       <header className="header">
@@ -57,6 +59,7 @@ export const Timeline = ({ timelineData }) => {
               >
                 <div className="row">
                   {timelineData
+                    .filter((item) => !item?.reported_by.includes(userId))
                     .filter((i) => i?.mediaUrls)
                     .map((item, index) => (
                       <div className="col-md-4" key={index}>
