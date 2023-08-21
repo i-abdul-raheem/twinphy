@@ -12,7 +12,10 @@ export const Post = () => {
 
   useEffect(() => {
     getPosts()
-      .then((res) => setPostData(res?.data?.data))
+      .then((res) => {
+        console.log(res);
+        setPostData(res?.data?.data);
+      })
       .catch((err) => console.log(err));
   }, []);
 

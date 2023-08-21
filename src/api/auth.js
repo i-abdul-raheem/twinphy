@@ -34,6 +34,16 @@ export const googleLogin = () => {
 
 export const avatarUpload = (values) => {
   return axios
+    .post(config.BASE_URL + "/upload/change-profile-image", values)
+    .then((res) => {
+      return res.data?.data?.Location;
+    })
+    .catch((err) => {
+      return err;
+    });
+};
+export const editAvatar = (values) => {
+  return axios
     .post(config.BASE_URL + "/upload", values)
     .then((res) => {
       return res.data?.data?.Location;
@@ -42,6 +52,7 @@ export const avatarUpload = (values) => {
       return err;
     });
 };
+
 
 export const debouncedUserName = debounce((e) => {
   return axios

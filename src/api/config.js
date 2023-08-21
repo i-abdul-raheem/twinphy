@@ -1,12 +1,12 @@
 import axios from 'axios';
 const GOOGLE_URL=process.env.REACT_APP_ENV === 'local'
-? 'http://localhost:5000'
-: 'http://13.48.59.123:5001';
+? 'https://localhost'
+: 'https://13.48.59.123';
 
 const BASE_URL =
   process.env.REACT_APP_ENV === "local"
-  ? "http://localhost:5000/api"
-  : "http://13.48.59.123:5001/api";
+  ? "https://localhost/api"
+  : "https://13.48.59.123/api";
 const makeRequest = async (fn) => {
   return axios
     .get(BASE_URL + "/auths", {
