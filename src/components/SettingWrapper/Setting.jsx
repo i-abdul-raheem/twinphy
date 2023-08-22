@@ -2,6 +2,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { Notification } from "./Account";
 import { useState } from "react";
 import PasswordChangeModal from "./Account/PasswordChangeModal";
+import { PersonalInfo } from "./Account/PersonalInfo";
 
 export const Setting = () => {
   const navigate = useNavigate();
@@ -66,8 +67,11 @@ export const Setting = () => {
               </li>
               <li>
                 <a
-                  href="account.html"
-                  className="item-content item-link filter m-0"
+                  href="javascript:void(0);"
+                  class="item-content item-link filter m-0"
+                  data-bs-toggle="offcanvas"
+                  data-bs-target="#offcanvasTop1"
+                  aria-controls="offcanvasTop"
                 >
                   <div className="dz-icon icon-sm">
                     <svg
@@ -178,6 +182,7 @@ export const Setting = () => {
         </div>
       </div>
       <Notification />
+      <PersonalInfo />
       <PasswordChangeModal
         show={showPasswordModal}
         onHide={handleClosePasswordModal}
