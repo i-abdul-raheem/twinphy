@@ -16,6 +16,7 @@ import { signup, login } from "../src/api/auth";
 import { currentLocation, generateRandomPassword } from "../src/utils";
 
 export default function App() {
+  const [islogin, setIsLogin] = useState();
   const createUser = async () => {
     const userDataCookie = document.cookie
       .split(";")
@@ -84,14 +85,16 @@ export default function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!localStorage.getItem("@twinphy-token")) {
+    if (localStorage.getItem("@twinphy-token") == null) {
+      setIsLogin(false);
       navigate("/login");
+    } else {
+      setIsLogin(true);
     }
   }, [localStorage]);
-
-  return (
+  console.log(islogin);
+  return islogin ? (
     <Routes>
-      <Route path="/" element={<HomePage />} />
       <Route path="/timeline" element={<Timeline />} />
       <Route path="/explore" element={<Explore />} />
       <Route path="/chat" element={<Chat />} />
@@ -100,6 +103,11 @@ export default function App() {
       <Route path="/notifications" element={<Notification />} />
       <Route path="/comment" element={<Comment />} />
       <Route path="/create-post" element={<CreatePost />} />
+      <Route path="/" element={<Login />} />
+    </Routes>
+  ) : (
+    <Routes>
+      
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/forget" element={<Forget />} />
