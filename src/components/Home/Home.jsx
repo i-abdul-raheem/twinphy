@@ -14,13 +14,13 @@ export const Home = () => {
       localStorage.getItem('@twinphy-user') &&
       localStorage.getItem('@twinphy-user') !== 'undefined'
     )
-      userId = JSON.parse(localStorage.getItem("@twinphy-user"))._id;
+      userId = JSON.parse(localStorage.getItem('@twinphy-user'))._id;
 
     const currentUser = JSON.parse(
-      localStorage.getItem("@twinphy-user")
+      localStorage.getItem('@twinphy-user')
     ).blocked;
     const followingUser = JSON.parse(
-      localStorage.getItem("@twinphy-user")
+      localStorage.getItem('@twinphy-user')
     ).followings;
 
     getPosts()
@@ -28,9 +28,14 @@ export const Home = () => {
         setPostData(
           res?.data?.data.filter(
             (item) =>
-              !item?.reported_by.includes(userId) &&
-              !currentUser.some((blockedId) => blockedId === item?.user_id?._id) &&
-              followingUser.some((followId) => followId._id === item?.user_id?._id)
+              item?.user_id?._id === userId ||
+              (!item?.reported_by.includes(userId) &&
+                !currentUser.some(
+                  (blockedId) => blockedId === item?.user_id?._id
+                ) &&
+                followingUser.some(
+                  (followId) => followId._id === item?.user_id?._id
+                ))
           )
         );
       })
@@ -49,7 +54,11 @@ export const Home = () => {
       <div className='content-inner pt-0'>
         <div className='container bottom-content'>
           <StorySection />
-          <Post postData={postData} fetchPosts={fetchPosts} />
+          <Post
+            postData={postData}
+            setPostData={setPostData}
+            fetchPosts={fetchPosts}
+          />
           <ShareExplore userData={userData} />
         </div>
       </div>

@@ -158,7 +158,7 @@ export const MyPost = ({ postData }) => {
             id="home-tab-pane3"
             role="tabpanel"
             aria-labelledby="home-tab"
-            tabindex="0"
+            tabIndex="0"
           >
             {profileData.map((tab, index) => (
               <div className="dz-lightgallery style-2" id="lightgallery">
@@ -178,7 +178,7 @@ export const MyPost = ({ postData }) => {
             id="profile-tab-pane3"
             role="tabpanel"
             aria-labelledby="profile-tab"
-            tabindex="0"
+            tabIndex="0"
           >
             {profileData.map((tab, index) => (
               <div className="dz-lightgallery" id="lightgallery-2">

@@ -4,7 +4,7 @@ export const Notification = () => {
   const [checked, isChecked] = useState(false);
   return (
     <>
-      <div className="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop2">
+      <div className="offcanvas offcanvas-top" tabIndex="-1" id="offcanvasTop2">
         <div className="offcanvas-header">
           <h5 className="offcanvas-title" id="offcanvasExampleLabel">
             Notification

@@ -6,7 +6,7 @@ import { BsFlag } from "react-icons/bs";
 export const PersonalInfo = () => {
   return (
     <>
-      <div className="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop1">
+      <div className="offcanvas offcanvas-top" tabIndex="-1" id="offcanvasTop1">
         <div className="offcanvas-header">
           <h5 className="offcanvas-title" id="offcanvasExampleLabel">
             Account Details

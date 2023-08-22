@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AiFillEye } from 'react-icons/ai';
 import { AiFillEyeInvisible } from 'react-icons/ai';
 import { login, googleLogin } from '../../api';
@@ -15,7 +15,7 @@ export const Login = ({ setIsLogin }) => {
   const handleGoogleLogin = (e) => {
     e.preventDefault();
     setLoading(true);
-    window.open('http://localhost:5000/auth/google', '_self');
+    window.open('https://13.48.59.123/auth/google', '_self');
     googleLogin()
       .then((res) => {
         console.log(res);

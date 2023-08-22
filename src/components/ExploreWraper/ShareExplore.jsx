@@ -3,7 +3,7 @@ export const ShareExplore = ({ userData }) => {
     <>
       <div
         className="offcanvas offcanvas-bottom"
-        tabindex="-1"
+        tabIndex="-1"
         id="offcanvasBottom1"
       >
         <button
