@@ -42,7 +42,6 @@ export const Signup = () => {
 
   const debouncedAPICall = async (e) => {
     let result = await debouncedUserName(e);
-    console.log(result, "debounce call");
     setUserNameError(result);
   };
 
@@ -57,7 +56,6 @@ export const Signup = () => {
       reader.onload = function (e) {
         document.getElementById("pic").src = e.target.result;
       };
-      console.log(reader.readAsDataURL(file), "12345");
     }
   };
 

@@ -34,7 +34,7 @@ export const googleLogin = () => {
 
 export const avatarUpload = (values) => {
   return axios
-    .post(config.BASE_URL + "/upload/change-profile-image", values)
+    .post(config.BASE_URL + "/upload", values)
     .then((res) => {
       return res.data?.data?.Location;
     })
