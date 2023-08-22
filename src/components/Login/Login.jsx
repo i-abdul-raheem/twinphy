@@ -7,7 +7,7 @@ import { toJson } from "../../utils";
 
 export const Login = () => {
   const navigate = useNavigate();
-
+     
   const [eye, setEye] = useState(false);
   const [errors, setErrors] = useState("");
 
@@ -32,7 +32,11 @@ export const Login = () => {
         }
         localStorage.setItem("@twinphy-token", res?.data?.token);
         localStorage.setItem("@twinphy-user", JSON.stringify(res?.data?.user));
+        
+        
         navigate("/");
+        
+        
       })
       .catch((err) => console.log(err));
   };
