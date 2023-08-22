@@ -2,35 +2,18 @@
 
 import { useState } from "react";
 
-export const Following = () => {
+export const Following = ({ followings, handleFollowUser }) => {
   const [grid, setGrid] = useState(true);
 
   const handleGrid = () => {
-      setGrid(true)
+    setGrid(true);
   };
   const handleColumn = () => {
-    setGrid(false)
+    setGrid(false);
   };
-  const userFriendsData = [
-    {
-      name: "Andy Lee",
-      imageSrc: "assets/images/stories/small/pic1.jpg",
-      isFollowed: true,
-    },
-    {
-      name: "Brian Harahap",
-      imageSrc: "assets/images/stories/small/pic2.jpg",
-      isFollowed: true,
-    },
-    {
-      name: "Christian Hang",
-      imageSrc: "assets/images/stories/small/pic3.jpg",
-      isFollowed: true,
-    },
-  ];
   return (
     <>
-       <div className="contant-section style-2" style={{ width: "100%" }}>
+      <div className="contant-section style-2" style={{ width: "100%" }}>
         <div className="title-bar m-0">
           <h6 className="mb-0">Friends</h6>
           <div className="dz-tab style-2">
@@ -150,64 +133,72 @@ export const Following = () => {
         </div>
         <div className="tab-content" id="myTab3Content">
           {grid ? (
-          <div
-            className="tab-pane fade show active"
-            id="grid"
-            role="tabpanel"
-            aria-labelledby="grid-tab"
-          >
-            <div className="dz-user-list row g-2">
+            <div
+              className="tab-pane fade show active"
+              id="grid"
+              role="tabpanel"
+              aria-labelledby="grid-tab"
+            >
               <div className="dz-user-list row g-2">
-                {userFriendsData.map((user, index) => (
-                  <div key={index} className="col-6">
-                    <div className="user-grid">
+                <div className="dz-user-list row g-2">
+                  {followings.map((user, index) => (
+                    <div key={index} className="col-6">
+                      <div className="user-grid">
+                        <a
+                          href="user-profile.html"
+                          className="media status media-60"
+                        >
+                          <img src={user.avatar} alt="/" />
+                          <div className="active-point"></div>
+                        </a>
+                        <a href="user-profile.html" className="name">
+                          @{user.userName}
+                        </a>
+                        <button
+                          className="follow-btn"
+                          onClick={() => handleFollowUser(user)}
+                        >
+                          UNFOLLOW
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div
+              className="tab-pane fade show active"
+              id="list"
+              role="tabpanel"
+              aria-labelledby="list-tab"
+            >
+              <div className="dz-user-list row g-3">
+                {followings.map((user, index) => (
+                  <div key={index} className="col-12">
+                    <div className="user-grid style-2">
                       <a
                         href="user-profile.html"
-                        className="media status media-60"
+                        className="d-flex align-items-center"
                       >
-                        <img src={user.imageSrc} alt="/" />
-                        <div className="active-point"></div>
+                        <div className="media status media-50">
+                          <img src={user.avatar} alt="/" />
+                          <div className="active-point"></div>
+                        </div>
+                        <span className="name">@{user.userName}</span>
                       </a>
-                      <a href="user-profile.html" className="name">
-                        {user.name}
-                      </a>
-                      <a href="javascript:void(0);" className="follow-btn">
-                        {user.isFollowed ? "UNFOLLOW" : "FOLLOW"}
-                      </a>
+                      <button
+                          className="follow-btn"
+                          onClick={() => handleFollowUser(user)}
+                        >
+                          UNFOLLOW
+                        </button>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
-          </div>):(
-          <div
-            className="tab-pane fade show active"
-            id="list"
-            role="tabpanel"
-            aria-labelledby="list-tab"
-          >
-            <div className="dz-user-list row g-3">
-              {userFriendsData.map((user, index) => (
-                <div key={index} className="col-12">
-                  <div className="user-grid style-2">
-                    <a
-                      href="user-profile.html"
-                      className="d-flex align-items-center"
-                    >
-                      <div className="media status media-50">
-                        <img src={user.imageSrc} alt="/" />
-                        <div className="active-point"></div>
-                      </div>
-                      <span className="name">{user.name}</span>
-                    </a>
-                    <a href="javascript:void(0);" className="follow-btn">
-                      {user.isFollowed ? "UNFOLLOW" : "FOLLOW"}
-                    </a>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>)}
+          )}
         </div>
       </div>
     </>

@@ -14,22 +14,25 @@ export const Home = () => {
       localStorage.getItem('@twinphy-user') &&
       localStorage.getItem('@twinphy-user') !== 'undefined'
     )
-      userId = JSON.parse(localStorage.getItem('@twinphy-user'))._id;
-    let currentUser;
-    if (localStorage.getItem('@twinphy-user') !== 'undefined')
-      currentUser = JSON.parse(localStorage.getItem('@twinphy-user')).blocked;
+      userId = JSON.parse(localStorage.getItem("@twinphy-user"))._id;
+
+    const currentUser = JSON.parse(
+      localStorage.getItem("@twinphy-user")
+    ).blocked;
+    const followingUser = JSON.parse(
+      localStorage.getItem("@twinphy-user")
+    ).followings;
+
     getPosts()
       .then((res) => {
-        if (currentUser)
-          setPostData(
-            res?.data?.data.filter(
-              (item) =>
-                !item?.reported_by.includes(userId) &&
-                !currentUser.some(
-                  (blockedId) => blockedId === item?.user_id?._id
-                )
-            )
-          );
+        setPostData(
+          res?.data?.data.filter(
+            (item) =>
+              !item?.reported_by.includes(userId) &&
+              !currentUser.some((blockedId) => blockedId === item?.user_id?._id) &&
+              followingUser.some((followId) => followId._id === item?.user_id?._id)
+          )
+        );
       })
       .catch((err) => console.log(err));
   };

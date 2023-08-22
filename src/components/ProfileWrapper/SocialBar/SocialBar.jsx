@@ -1,14 +1,27 @@
 import { useEffect, useState } from "react";
 import { Follower, Following } from "../Friends";
 import { MyPost } from "../MyPost";
-import { getSinglePosts } from "../../../api";
+import { followUser, getSinglePosts } from "../../../api";
 
 export const SocialBar = () => {
-  const [postData, setPostData] = useState([])
-  useEffect(() => {
+  const [postData, setPostData] = useState([]);
+  const currentUser = JSON.parse(localStorage.getItem("@twinphy-user")).blocked;
+  const fetchPosts = () => {
     getSinglePosts()
-      .then((res) => setPostData(res?.data?.data))
+      .then((res) => {
+        setPostData(
+          res?.data?.data.filter(
+            (item) =>
+              !item?.reported_by.includes(userId) &&
+              !currentUser.some((blockedId) => blockedId === item?.user_id)
+          )
+        );
+      })
       .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    fetchPosts();
   }, []);
   const [tab, setTab] = useState({
     post: true,
@@ -40,7 +53,19 @@ export const SocialBar = () => {
     });
   };
 
-  console.log(postData, "ok g")
+  const handleFollowUser = (user) => {
+    followUser(user._id)
+      .then((res) => {
+        const storedData = JSON.parse(localStorage.getItem("@twinphy-user"));
+        storedData.followings = res?.data?.followings;
+        storedData.followers = res?.data?.followers;
+        localStorage.setItem("@twinphy-user", JSON.stringify(storedData));
+        fetchPosts();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const userId = JSON.parse(localStorage.getItem("@twinphy-user"));
 
   return (
     <>
@@ -60,7 +85,7 @@ export const SocialBar = () => {
               className={`nav-link ${tab?.followers && "active"}`}
               onClick={handleFollower}
             >
-              <h4>250</h4>
+              <h4>{userId.followers.length}</h4>
               <span>Follower</span>
             </button>
           </li>
@@ -69,7 +94,7 @@ export const SocialBar = () => {
               className={`nav-link ${tab?.following && "active"}`}
               onClick={handleFollowing}
             >
-              <h4>4.5k</h4>
+              <h4>{userId.followings.length}</h4>
               <span>Following</span>
             </button>
           </li>
@@ -79,18 +104,24 @@ export const SocialBar = () => {
         {/* <!-- Tab Content for "Post" --> */}
         {tab?.post && (
           <div className="tab-pane active">
-            <MyPost postData={postData}/>
+            <MyPost postData={postData} />
           </div>
         )}
 
         {tab?.followers && (
           <div className="tab-pane active">
-            <Follower />
+            <Follower
+              followers={userId.followers}
+              handleFollowUser={handleFollowUser}
+            />
           </div>
         )}
         {tab?.following && (
           <div className="tab-pane active">
-            <Following />
+            <Following
+              followings={userId.followings}
+              handleFollowUser={handleFollowUser}
+            />
           </div>
         )}
       </div>
