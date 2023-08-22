@@ -85,7 +85,7 @@ export default function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (localStorage.getItem("@twinphy-token") == null) {
+    if (localStorage.getItem("@twinphy-token") == null || localStorage.getItem("@twinphy-token") == "undefined") {
       setIsLogin(false);
       navigate("/login");
     } else {

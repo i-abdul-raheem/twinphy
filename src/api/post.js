@@ -46,3 +46,16 @@ export const reportPost = (postId, description, user_id) => {
       .catch((err) => console.log(err));
   });
 };
+
+
+export const handlePostLikes=(post_id, user_id)=>{
+  return config.makeRequest(()=>{
+    return axios 
+    .patch(`${url}/likes`, {post_id, user_id})
+    .then((res)=>{
+      console.log(res?.data);
+      return res?.data
+    })
+    .catch((err)=>console.log(err))
+  })
+}

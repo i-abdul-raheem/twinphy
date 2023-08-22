@@ -21,7 +21,7 @@ export const Post = ({ postData, fetchPosts }) => {
             <div className="post-meta-btn">
               <ul>
                 <li>
-                  <Likes />
+                  <Likes post_id={item?._id} likes={item?.likes}/>
                 </li>
                 <li>
                   <Comments />
