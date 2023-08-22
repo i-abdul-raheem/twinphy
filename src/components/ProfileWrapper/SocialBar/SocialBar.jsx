@@ -40,6 +40,8 @@ export const SocialBar = () => {
     });
   };
 
+  console.log(postData, "ok g")
+
   return (
     <>
       <div className="social-bar">
@@ -49,7 +51,7 @@ export const SocialBar = () => {
               className={`nav-link ${tab?.post && "active"}`}
               onClick={handlePost}
             >
-              <h4>{postData.length-1}</h4>
+              <h4>{postData.length}</h4>
               <span>Post</span>
             </button>
           </li>

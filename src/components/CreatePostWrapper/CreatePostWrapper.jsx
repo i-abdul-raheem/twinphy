@@ -5,11 +5,13 @@ import { Header } from "./Header";
 import "./style.css";
 import { handleAddPost, handleGetPosts } from "../../api/post";
 import { avatarUpload } from "../../api";
+import { useNavigate } from "react-router-dom";
 
 export const CreatePostWrapper = () => {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const [mediaUrls, setMediaUrls] = useState("");
+  const navigate = useNavigate();
   const handlePost = (e) => {
     setLoading(true);
     e.preventDefault();
@@ -22,6 +24,7 @@ export const CreatePostWrapper = () => {
           .then(() => {
             setLoading(false);
             alert("Post Created");
+            navigate("/");
           })
           .catch(() => {
             setLoading(false);
@@ -33,6 +36,8 @@ export const CreatePostWrapper = () => {
         .then(() => {
           setLoading(false);
           alert("Post Created");
+          navigate("/");
+
         })
         .catch(() => {
           setLoading(false);

@@ -16,7 +16,7 @@ export const CreatePost = ({setText}) => {
         <div className='post-profile'>
           <div className='left-content'>
             <div className='media media-50 rounded-circle'>
-              <img id='pic' src={userName?.profileImage} alt='profile' />
+              <img id='pic' src={userName?.avatar} alt='profile' />
             </div>
             <div className='ms-2'>
               <h6 id='name' className='mb-1'>
