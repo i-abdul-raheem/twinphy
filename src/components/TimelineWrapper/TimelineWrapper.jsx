@@ -7,19 +7,32 @@ import { Timeline } from "./Timeline";
 import { getPosts } from "../../api";
 
 export const TimelineWrapper = () => {
-
   const [timelineData, setTimelineData] = useState([]);
 
-  useEffect(() => {
+  const fetchPosts = () => {
+    const userId = JSON.parse(localStorage.getItem("@twinphy-user"))._id;
+  const currentUser = JSON.parse(localStorage.getItem("@twinphy-user")).blocked;
     getPosts()
-      .then((res) => setTimelineData(res?.data?.data))
+      .then((res) =>
+        setTimelineData(
+          res?.data?.data.filter(
+            (item) =>
+              !item?.reported_by.includes(userId) &&
+              !currentUser.some((blockedId) => blockedId === item?.user_id?._id)
+          )
+        )
+      )
       .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    fetchPosts();
   }, []);
   return (
     <>
       <Header title={"Timeline"} />
       <Sidebar />
-      <Timeline timelineData={timelineData}/>
+      <Timeline fetchPosts={fetchPosts} timelineData={timelineData} />
       <MenuBar />
     </>
   );
