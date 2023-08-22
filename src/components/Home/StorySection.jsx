@@ -7,7 +7,13 @@ export const StorySection = () => {
             <div className='swiper-slide'>
               <a href='#story' className='categore-box style-1'>
                 <div className='story-bx'>
-                  <img id='pic-top' src='' alt='/' />
+                  <img
+                    id='pic-top'
+                    src={
+                      JSON.parse(localStorage.getItem('@twinphy-user')).avatar
+                    }
+                    alt='/'
+                  />
                   <div className='add-box'>
                     <i className='fa-solid fa-plus'></i>
                   </div>

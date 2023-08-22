@@ -3,22 +3,28 @@ import { Media } from "./Media";
 import { Likes } from "./Likes";
 import { Comments } from "./Comments";
 import { Share } from "./Share";
+import { getPosts } from "../../../api";
+import { useEffect, useState } from "react";
 
 export const Post = ({ postData, fetchPosts }) => {
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
   return (
-    <div id="post-area" className="post-area">
+    <div id='post-area' className='post-area'>
       {postData.map((item, index) => (
-        <div key={index} className="post-card">
+        <div key={index} className='post-card'>
           <Header
             fetchPosts={fetchPosts}
             time={item?.createdAt}
             userData={item?.user_id}
             postId={item?._id}
           />
-          <p className="text-black">{item?.text}</p>
-          <div className="dz-media">
+          <p className='text-black'>{item?.text}</p>
+          <div className='dz-media'>
             <Media src={item?.mediaUrls} />
-            <div className="post-meta-btn">
+            <div className='post-meta-btn'>
               <ul>
                 <li>
                   <Likes />
@@ -31,7 +37,7 @@ export const Post = ({ postData, fetchPosts }) => {
                 </li>
 
                 {/* <!-- Dynamically Added Elements --> */}
-                <div id="dynamicElements">
+                <div id='dynamicElements'>
                   {/* <!-- Dynamically added elements will be inserted here --> */}
                 </div>
               </ul>

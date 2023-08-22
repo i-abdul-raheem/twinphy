@@ -85,7 +85,7 @@ export default function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (localStorage.getItem("@twinphy-token") == null) {
+    if (localStorage.getItem("@twinphy-token") === null || localStorage.getItem("@twinphy-token") === "undefined") {
       setIsLogin(false);
       navigate("/login");
     } else {
@@ -96,6 +96,7 @@ export default function App() {
   return islogin ? (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/home" element={<HomePage />} />
       <Route path="/timeline" element={<Timeline />} />
       <Route path="/explore" element={<Explore />} />
       <Route path="/chat" element={<Chat />} />
