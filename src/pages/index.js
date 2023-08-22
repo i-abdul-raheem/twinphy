@@ -8,3 +8,4 @@ export * from './Comment';
 export * from './Friends';
 export * from './CreatePost';
 export * from './Explore';
+export * from "./Setting";

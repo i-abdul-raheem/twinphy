@@ -9,9 +9,10 @@ import {
   Message,
   Notification,
   Profile,
+  Setting,
   Timeline,
 } from "./pages";
-import { Forget, Login, Signup } from "./components";
+import { About, Forget, Login, PrivacyPolicy, Signup, Terms } from "./components";
 import { signup, login } from "../src/api/auth";
 import { currentLocation, generateRandomPassword } from "../src/utils";
 
@@ -103,6 +104,10 @@ export default function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/forget" element={<Forget />} />
+      <Route path="/settings" element={<Setting />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/terms" element={<Terms />} />
     </Routes>
   );
 }
