@@ -4,8 +4,9 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { AiOutlineClose } from "react-icons/ai";
 import { useState } from "react";
 import { reportPost, blockUser } from "../../../api";
+import { blankImage } from "../../../utils";
 
-export const Header = ({ time, userData, postId }) => {
+export const Header = ({ time, userData, postId, fetchPosts }) => {
   const currentTime = moment(time).fromNow();
 
   const [showReportModal, setShowReportModal] = useState(false);
@@ -32,10 +33,11 @@ export const Header = ({ time, userData, postId }) => {
           alert(res?.response?.data?.message);
           return;
         }
-        const storedData =JSON.parse(localStorage.getItem("@twinphy-user"));
-        storedData.blocked=res?.data;
+        const storedData = JSON.parse(localStorage.getItem("@twinphy-user"));
+        storedData.blocked = res?.data;
 
-        localStorage.setItem("@twinphy-user", JSON.stringify(storedData))
+        localStorage.setItem("@twinphy-user", JSON.stringify(storedData));
+        fetchPosts();
       })
       .catch((err) => console.log(err));
   };
@@ -46,7 +48,7 @@ export const Header = ({ time, userData, postId }) => {
         <Link to="/user-profile" className="media media-40">
           <img
             className="rounded"
-            src="assets/images/stories/small/pic2.jpg"
+            src={userData.avatar ? userData.avatar : blankImage}
             alt="/"
           />
         </Link>
