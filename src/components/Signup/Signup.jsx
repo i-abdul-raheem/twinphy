@@ -42,13 +42,11 @@ export const Signup = () => {
 
   const debouncedAPICall = async (e) => {
     let result = await debouncedUserName(e);
-    console.log(result, "debounce call");
     setUserNameError(result);
   };
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
-    console.log(URL.createObjectURL(file).replace(/^blob:/, ""), "12");
     if (file) {
       setValues({
         ...values,
@@ -58,7 +56,6 @@ export const Signup = () => {
       reader.onload = function (e) {
         document.getElementById("pic").src = e.target.result;
       };
-      console.log(reader.readAsDataURL(file), "12345");
     }
   };
 
@@ -66,11 +63,9 @@ export const Signup = () => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const fileUpload = new FormData();
-    console.log(fileUpload,"fileUpload")
     fileUpload.append('avatar', formData.get('avatar'));
     let imagePath= await avatarUpload(fileUpload);
     formData.append('avatar', imagePath);
-    console.log(imagePath, "imagePath")
 
     signup(toJson(formData))
       .then((res) => {
