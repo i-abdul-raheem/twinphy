@@ -101,7 +101,8 @@ export default function App() {
     } else {
       setIsLogin(true);
     }
-  }, [localStorage]);
+    // eslint-disable-next-line
+  }, []);
 
   return islogin ? (
     <Routes>
@@ -122,8 +123,8 @@ export default function App() {
     </Routes>
   ) : (
     <Routes>
-      <Route path='/' element={<Login />} />
-      <Route path='/login' element={<Login />} />
+      <Route path='/' element={<Login setIsLogin={setIsLogin} />} />
+      <Route path='/login' element={<Login setIsLogin={setIsLogin} />} />
       <Route path='/signup' element={<Signup />} />
       <Route path='/forget' element={<Forget />} />
     </Routes>

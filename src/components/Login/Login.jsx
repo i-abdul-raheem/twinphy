@@ -5,7 +5,7 @@ import { AiFillEyeInvisible } from 'react-icons/ai';
 import { login, googleLogin } from '../../api';
 import { toJson } from '../../utils';
 
-export const Login = () => {
+export const Login = ({ setIsLogin }) => {
   const navigate = useNavigate();
 
   const [eye, setEye] = useState(false);
@@ -20,6 +20,7 @@ export const Login = () => {
       .then((res) => {
         console.log(res);
         setLoading(false);
+        setIsLogin(true);
       })
       .catch((err) => {
         console.log(err);
@@ -38,10 +39,15 @@ export const Login = () => {
         }
         localStorage.setItem('@twinphy-token', res?.data?.token);
         localStorage.setItem('@twinphy-user', JSON.stringify(res?.data?.user));
-
-        navigate('/home');
+        // window.open('/', '_self');
+        setLoading(false);
+        setIsLogin(true);
+        navigate("/")
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -52,6 +58,11 @@ export const Login = () => {
       clearTimeout(timeout);
     };
   }, [errors]);
+
+  useEffect(() => {
+    localStorage.removeItem('@twinphy-user');
+    localStorage.removeItem('@twinphy-token');
+  }, []);
 
   return (
     <div class='content-body'>
@@ -145,7 +156,11 @@ export const Login = () => {
               {/* <a class='btn btn-primary btn-block mb-3'>
               SIGN IN
             </a> */}
-              <button disabled={loading} type='submit' className='btn btn-primary btn-block mb-3'>
+              <button
+                disabled={loading}
+                type='submit'
+                className='btn btn-primary btn-block mb-3'
+              >
                 {loading ? 'Please Wait' : 'SIGN IN'}
               </button>
             </form>
