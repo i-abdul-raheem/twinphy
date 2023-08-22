@@ -14,3 +14,4 @@ export * from './Login';
 export * from './Signup';
 export * from './Forget';
 export * from "./ExploreWraper";
+export * from "./SettingWrapper"
