@@ -1,4 +1,4 @@
-import { BiLogOut } from "react-icons/bi";
+import { BiCog, BiLogOut } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { NavLink, useNavigate } from "react-router-dom";
 
@@ -70,18 +70,62 @@ export const Header = ({ title }) => {
                   </defs>
                 </svg>
               </Link>
-              <button
-                style={{ border: "none", fontSize: "24px" }}
-                className="bell-icon me-2"
-              >
-                <BiLogOut
-                  onClick={() => {
-                    localStorage.removeItem("@twinphy-token");
-                    localStorage.removeItem("@twinphy-user");
-                    navigate("/login");
+
+              <div className="dropdown">
+                <button
+                  className=" dropdown-toggle settings-icon"
+                  type="button"
+                  id="settingsDropdown"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  style={{
+                    border: "none",
+                    background: "none",
+                    color: "#FE9063",
+                    width: "42px",
+                    height: "42px",
+                    lineHeight: "42px",
+                    backgroundColor: "var(--rgba-primary-2)",
+                    borderRadius: "var(--border-radius-base)",
+                    textAlign: "center",
+                    display: "block",
+                    fontSize: "25px",
                   }}
-                />
-              </button>
+                >
+                  <BiCog />
+                </button>
+
+                <ul
+                  className="dropdown-menu dropdown-menu-end"
+                  aria-labelledby="settingsDropdown"
+                >
+                  <li
+                    onClick={() => {
+                      navigate("/profile");
+                    }}
+                  >
+                    <Link className="dropdown-item" to="/settings">
+                      Edit Profile
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/settings">
+                      Settings
+                    </Link>
+                  </li>
+                  <li
+                    onClick={() => {
+                      localStorage.removeItem("@twinphy-token");
+                      localStorage.removeItem("@twinphy-user");
+                      navigate("/login");
+                    }}
+                  >
+                    <Link className="dropdown-item" to="/settings">
+                      Logout
+                    </Link>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
