@@ -48,6 +48,7 @@ export const Signup = () => {
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
+    console.log(URL.createObjectURL(file).replace(/^blob:/, ""), "12");
     if (file) {
       setValues({
         ...values,
@@ -65,9 +66,11 @@ export const Signup = () => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const fileUpload = new FormData();
+    console.log(fileUpload,"fileUpload")
     fileUpload.append('avatar', formData.get('avatar'));
     let imagePath= await avatarUpload(fileUpload);
     formData.append('avatar', imagePath);
+    console.log(imagePath, "imagePath")
 
     signup(toJson(formData))
       .then((res) => {
