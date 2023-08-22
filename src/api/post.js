@@ -6,7 +6,7 @@ const url = config.BASE_URL + "/posts";
 export const getSinglePosts = () => {
   return config.makeRequest(() => {
     return axios
-      .get(`${url}/user/${JSON.parse(localStorage.getItem("@twinphy-user"))._id}`)
+      .get(`${url}/${JSON.parse(localStorage.getItem("@twinphy-user"))._id}`)
       .then((res) => res)
       .catch((err) => console.log(err));
   });

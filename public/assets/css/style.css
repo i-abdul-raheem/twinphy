@@ -18731,9 +18731,17 @@ button:focus {
   display: flex;
   flex-wrap: wrap;
 } 
+#lg-content-1, #lg-toolbar-1{
+  display: none;
+}
  
 #lightgallery .gallery-box {
-  width: 100%;
+  width: 33.33%;
+  padding-bottom: 5px;
+  padding-right: 5px;
+}
+#lightgallery #galley-timeline {
+  width: 100% !important; 
   padding-bottom: 5px;
   padding-right: 5px;
 }

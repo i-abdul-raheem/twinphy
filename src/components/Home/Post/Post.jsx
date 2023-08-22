@@ -1,38 +1,12 @@
-import { Header } from './Header';
-import { Media } from './Media';
-import { Likes } from './Likes';
-import { Comments } from './Comments';
-import { getPosts } from '../../../api';
-import { useEffect, useState } from 'react';
+import { Header } from "./Header";
+import { Media } from "./Media";
+import { Likes } from "./Likes";
+import { Comments } from "./Comments";
+import { Share } from "./Share";
+import { getPosts } from "../../../api";
+import { useEffect, useState } from "react";
 
-export const Post = () => {
-  const [postData, setPostData] = useState([]);
-
-  const fetchPosts = () => {
-    let userId;
-    if (
-      localStorage.getItem('@twinphy-user') &&
-      localStorage.getItem('@twinphy-user') !== 'undefined'
-    )
-      userId = JSON.parse(localStorage.getItem('@twinphy-user'))._id;
-    let currentUser;
-    if (localStorage.getItem('@twinphy-user') !== 'undefined')
-      currentUser = JSON.parse(localStorage.getItem('@twinphy-user')).blocked;
-    getPosts()
-      .then((res) => {
-        if (currentUser)
-          setPostData(
-            res?.data?.data.filter(
-              (item) =>
-                !item?.reported_by.includes(userId) &&
-                !currentUser.some(
-                  (blockedId) => blockedId === item?.user_id?._id
-                )
-            )
-          );
-      })
-      .catch((err) => console.log(err));
-  };
+export const Post = ({ postData, fetchPosts }) => {
 
   useEffect(() => {
     fetchPosts();
@@ -57,6 +31,9 @@ export const Post = () => {
                 </li>
                 <li>
                   <Comments />
+                </li>
+                <li>
+                  <Share />
                 </li>
 
                 {/* <!-- Dynamically Added Elements --> */}
