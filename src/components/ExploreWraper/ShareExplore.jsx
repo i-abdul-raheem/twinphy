@@ -50,7 +50,7 @@ export const ShareExplore = ({ userData }) => {
               {userData.map((user) => (
                 <li key={user.id}>
                   <div className="left-content">
-                    <img src={user.profileImage} alt="/" />
+                    <img src={user.avatar} alt="/" />
                     <h6 className="name">{user.firstName +" "+ user.lastName}</h6>
                     <span className="username">{user.username}</span>
                   </div>

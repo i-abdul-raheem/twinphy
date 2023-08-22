@@ -200,7 +200,6 @@ export const MyPost = ({ postData }) => {
                       ) : (
                         <img src={image} alt="image" />
                       )}
-                      <img src={image} alt="image" />
                     </NavLink>
                   </a>
                 ))}

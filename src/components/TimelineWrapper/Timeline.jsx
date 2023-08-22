@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
 export const Timeline = ({ fetchPosts, timelineData }) => {
@@ -69,6 +68,7 @@ export const Timeline = ({ fetchPosts, timelineData }) => {
                         >
                           <NavLink
                             to="/explore"
+                            id="galley-timeline"
                             className="gallery-box"
                             data-lg-id={item?.id}
                           >
