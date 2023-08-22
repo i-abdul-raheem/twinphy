@@ -19,13 +19,18 @@ export const Home = () => {
     const currentUser = JSON.parse(
       localStorage.getItem("@twinphy-user")
     ).blocked;
+    const followingUser = JSON.parse(
+      localStorage.getItem("@twinphy-user")
+    ).followings;
+
     getPosts()
       .then((res) => {
         setPostData(
           res?.data?.data.filter(
             (item) =>
               !item?.reported_by.includes(userId) &&
-              !currentUser.some((blockedId) => blockedId === item?.user_id?._id)
+              !currentUser.some((blockedId) => blockedId === item?.user_id?._id) &&
+              followingUser.some((followId) => followId._id === item?.user_id?._id)
           )
         );
       })

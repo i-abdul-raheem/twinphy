@@ -1,14 +1,27 @@
 import { useEffect, useState } from "react";
 import { Follower, Following } from "../Friends";
 import { MyPost } from "../MyPost";
-import { getSinglePosts, getSingleUser } from "../../../api";
+import { followUser, getSinglePosts } from "../../../api";
 
 export const SocialBar = () => {
   const [postData, setPostData] = useState([]);
-  useEffect(() => {
+  const currentUser = JSON.parse(localStorage.getItem("@twinphy-user")).blocked;
+  const fetchPosts = () => {
     getSinglePosts()
-      .then((res) => setPostData(res?.data?.data))
+      .then((res) => {
+        setPostData(
+          res?.data?.data.filter(
+            (item) =>
+              !item?.reported_by.includes(userId) &&
+              !currentUser.some((blockedId) => blockedId === item?.user_id)
+          )
+        );
+      })
       .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    fetchPosts();
   }, []);
   const [tab, setTab] = useState({
     post: true,
@@ -40,14 +53,19 @@ export const SocialBar = () => {
     });
   };
 
-  const userId = JSON.parse(localStorage.getItem("@twinphy-user"));
-  console.log(userId);
-
-  useEffect(() => {
-    getSingleUser()
-      .then((res) => console.log(res))
+  const handleFollowUser = (user) => {
+    followUser(user._id)
+      .then((res) => {
+        const storedData = JSON.parse(localStorage.getItem("@twinphy-user"));
+        storedData.followings = res?.data?.followings;
+        storedData.followers = res?.data?.followers;
+        localStorage.setItem("@twinphy-user", JSON.stringify(storedData));
+        fetchPosts();
+      })
       .catch((err) => console.log(err));
-  }, []);
+  };
+
+  const userId = JSON.parse(localStorage.getItem("@twinphy-user"));
 
   return (
     <>
@@ -92,12 +110,18 @@ export const SocialBar = () => {
 
         {tab?.followers && (
           <div className="tab-pane active">
-            <Follower />
+            <Follower
+              followers={userId.followers}
+              handleFollowUser={handleFollowUser}
+            />
           </div>
         )}
         {tab?.following && (
           <div className="tab-pane active">
-            <Following />
+            <Following
+              followings={userId.followings}
+              handleFollowUser={handleFollowUser}
+            />
           </div>
         )}
       </div>
