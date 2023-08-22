@@ -3,7 +3,7 @@ import moment from "moment";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { AiOutlineClose } from "react-icons/ai";
 import { useState } from "react";
-import { reportPost } from "../../../api";
+import { reportPost, blockUser } from "../../../api";
 
 export const Header = ({ time, userData, postId }) => {
   const currentTime = moment(time).fromNow();
@@ -21,6 +21,22 @@ export const Header = ({ time, userData, postId }) => {
     e.preventDefault();
     reportPost(postId, description, user_id)
       .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
+
+  const handleBlock = (id) => {
+    console.log(id, "userData");
+    blockUser(id)
+      .then((res) => {
+        if (res.response) {
+          alert(res?.response?.data?.message);
+          return;
+        }
+        const storedData =JSON.parse(localStorage.getItem("@twinphy-user"));
+        storedData.blocked=res?.data;
+
+        localStorage.setItem("@twinphy-user", JSON.stringify(storedData))
+      })
       .catch((err) => console.log(err));
   };
 
@@ -88,6 +104,14 @@ export const Header = ({ time, userData, postId }) => {
             <li>
               <button className="dropdown-item" onClick={toggleReportModal}>
                 Report Post
+              </button>
+            </li>
+            <li>
+              <button
+                className="dropdown-item"
+                onClick={() => handleBlock(userData._id)}
+              >
+                Block
               </button>
             </li>
           </ul>
