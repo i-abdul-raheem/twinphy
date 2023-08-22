@@ -34,7 +34,7 @@ export const Login = () => {
         localStorage.setItem("@twinphy-user", JSON.stringify(res?.data?.user));
         
         
-        navigate("/create-post");
+        navigate("/");
         
         
       })

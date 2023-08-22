@@ -18,13 +18,13 @@ export const Post = () => {
   useEffect(() => {
     getPosts()
       .then((res) => {
-        console.log(res);
+        
         setPostData(res?.data?.data);
       })
       .catch((err) => console.log(err));
   }, []);
 
-  console.log(postData, "postData");
+ 
   return (
     <div id="post-area" className="post-area">
       {postData

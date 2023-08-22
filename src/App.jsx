@@ -16,7 +16,7 @@ import { signup, login } from "../src/api/auth";
 import { currentLocation, generateRandomPassword } from "../src/utils";
 
 export default function App() {
-  const [islogin, setIsLogin] = useState();
+  const [islogin, setIsLogin] = useState(localStorage.getItem("@twinphy-token") || null);
   const createUser = async () => {
     const userDataCookie = document.cookie
       .split(";")
@@ -28,7 +28,7 @@ export default function App() {
       const userData = JSON.parse(decodedData);
       currentLocation()
         .then((res) => {
-          console.log(res);
+         
           const randomPassword = generateRandomPassword();
           signup({
             firstName: userData?.name?.givenName,
@@ -43,13 +43,13 @@ export default function App() {
             country: res.country,
           })
             .then((res) => {
-              console.log(res, "then");
+              
               if (res.response) {
                 if (
                   res.response?.data?.message ===
                   "User with same email already exist"
                 ) {
-                  console.log(res.response?.data?.message);
+                  
                   login({
                     email: userData?.emails[0].value,
                     login_type: "google",
@@ -92,9 +92,10 @@ export default function App() {
       setIsLogin(true);
     }
   }, [localStorage]);
-  console.log(islogin);
+  
   return islogin ? (
     <Routes>
+      <Route path="/" element={<HomePage />} />
       <Route path="/timeline" element={<Timeline />} />
       <Route path="/explore" element={<Explore />} />
       <Route path="/chat" element={<Chat />} />
@@ -103,11 +104,10 @@ export default function App() {
       <Route path="/notifications" element={<Notification />} />
       <Route path="/comment" element={<Comment />} />
       <Route path="/create-post" element={<CreatePost />} />
-      <Route path="/" element={<Login />} />
     </Routes>
   ) : (
     <Routes>
-      
+      <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/forget" element={<Forget />} />
