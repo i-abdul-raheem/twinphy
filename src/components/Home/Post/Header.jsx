@@ -3,9 +3,10 @@ import moment from "moment";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { AiOutlineClose } from "react-icons/ai";
 import { useState } from "react";
-import { reportPost } from "../../../api";
+import { reportPost, blockUser } from "../../../api";
+import { blankImage } from "../../../utils";
 
-export const Header = ({ time, userData, postId }) => {
+export const Header = ({ time, userData, postId, fetchPosts }) => {
   const currentTime = moment(time).fromNow();
 
   const [showReportModal, setShowReportModal] = useState(false);
@@ -24,13 +25,30 @@ export const Header = ({ time, userData, postId }) => {
       .catch((err) => console.log(err));
   };
 
+  const handleBlock = (id) => {
+    console.log(id, "userData");
+    blockUser(id)
+      .then((res) => {
+        if (res.response) {
+          alert(res?.response?.data?.message);
+          return;
+        }
+        const storedData = JSON.parse(localStorage.getItem("@twinphy-user"));
+        storedData.blocked = res?.data;
+
+        localStorage.setItem("@twinphy-user", JSON.stringify(storedData));
+        fetchPosts();
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <div className="top-meta">
       <div className="d-flex justify-content-between align-items-start">
         <Link to="/user-profile" className="media media-40">
           <img
             className="rounded"
-            src={userData?.avatar}
+            src={userData.avatar ? userData.avatar : blankImage}
             alt="/"
           />
         </Link>
@@ -88,6 +106,14 @@ export const Header = ({ time, userData, postId }) => {
             <li>
               <button className="dropdown-item" onClick={toggleReportModal}>
                 Report Post
+              </button>
+            </li>
+            <li>
+              <button
+                className="dropdown-item"
+                onClick={() => handleBlock(userData._id)}
+              >
+                Block
               </button>
             </li>
           </ul>

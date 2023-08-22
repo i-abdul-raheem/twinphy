@@ -1,6 +1,7 @@
+import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
-export const Timeline = ({ timelineData }) => {
+export const Timeline = ({ fetchPosts, timelineData }) => {
   const video = [
     "mp4",
     "avi",
@@ -16,7 +17,7 @@ export const Timeline = ({ timelineData }) => {
     "ogg",
   ];
 
-  const userId = JSON.parse(localStorage.getItem("@twinphy-user"))._id;
+  
   return (
     <>
       <header className="header">
@@ -59,7 +60,6 @@ export const Timeline = ({ timelineData }) => {
               >
                 <div className="row">
                   {timelineData
-                    .filter((item) => !item?.reported_by.includes(userId))
                     .filter((i) => i?.mediaUrls)
                     .map((item, index) => (
                       <div className="col-md-4" key={index}>
