@@ -901,7 +901,7 @@
                 }
                 var $item = _this.core.getSlideItem(_this.core.index);
                 if (_this.$LG(e.target).hasClass('lg-item') ||
-                    $item.get().contains(e.target)) {
+                    $item?.get()?.contains(e.target)) {
                     startTime = new Date();
                     _LGel = _this.core
                         .getSlideItem(_this.core.index)

@@ -2,40 +2,9 @@ import { Header } from "./Header";
 import { Media } from "./Media";
 import { Likes } from "./Likes";
 import { Comments } from "./Comments";
-import axios from "axios";
-import { getPosts } from "../../../api";
-import { useEffect, useState } from "react";
+import { Share } from "./Share";
 
-export const Post = () => {
-  const [postData, setPostData] = useState([]);
-
-  const fetchPosts = () => {
-    let userId;
-    if (
-      localStorage.getItem("@twinphy-user") &&
-      localStorage.getItem("@twinphy-user") !== "undefined"
-    )
-      userId = JSON.parse(localStorage.getItem("@twinphy-user"))._id;
-
-    const currentUser = JSON.parse(
-      localStorage.getItem("@twinphy-user")
-    ).blocked;
-    getPosts()
-      .then((res) => {
-        setPostData(
-          res?.data?.data.filter(
-            (item) =>
-              !item?.reported_by.includes(userId) &&
-              !currentUser.some((blockedId) => blockedId === item?.user_id?._id)
-          )
-        );
-      })
-      .catch((err) => console.log(err));
-  };
-
-  useEffect(() => {
-    fetchPosts();
-  }, []);
+export const Post = ({ postData, fetchPosts }) => {
   return (
     <div id="post-area" className="post-area">
       {postData.map((item, index) => (
@@ -56,6 +25,9 @@ export const Post = () => {
                 </li>
                 <li>
                   <Comments />
+                </li>
+                <li>
+                  <Share />
                 </li>
 
                 {/* <!-- Dynamically Added Elements --> */}
